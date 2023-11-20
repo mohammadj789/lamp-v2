@@ -1,0 +1,52 @@
+import { create } from "zustand";
+import { persist, devtools } from "zustand/middleware";
+const store = (set, get) => ({
+  audio: null,
+  track: {
+    title: null,
+    Image: null,
+    credit: null,
+    id: null,
+    lyric: null,
+  },
+  currentTime: 0,
+  duration: 0,
+  play: false,
+  mute: false,
+  volume: 0.7,
+  lastChange: null,
+  updateAudio: (lastChange) => set({ lastChange: lastChange }),
+  setDuration: (duration) => set({ duration: duration }),
+  updateTime: (time) => set({ currentTime: time }),
+  setTrack: (track) =>
+    set({
+      track: {
+        title: track.title,
+        image: track.image,
+        credit: track.credit,
+        id: track.id,
+        lyric: track.lyric,
+      },
+      currentTime: 0,
+      play: true,
+    }),
+  togglePlay: () => set({ play: true }),
+  togglePause: () => set({ play: false }),
+  toggleMute: () => set({ mute: !get().mute }),
+  changeVolume: (volume) => set({ volume: volume }),
+});
+const useLampStore = create(
+  devtools(
+    persist(store, {
+      name: "lamp",
+      partialize: (state) =>
+        Object.fromEntries(
+          Object.entries(state).filter(([key]) =>
+            ["track"].includes(key)
+          )
+        ),
+    })
+  )
+);
+
+export default useLampStore;
