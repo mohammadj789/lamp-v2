@@ -8,7 +8,9 @@ const store = (set, get) => ({
     credit: null,
     id: null,
     lyric: null,
+    collection: null,
   },
+
   currentTime: 0,
   duration: 0,
   play: false,
@@ -26,6 +28,7 @@ const store = (set, get) => ({
         credit: track.credit,
         id: track.id,
         lyric: track.lyric,
+        collection: track.collection,
       },
       currentTime: 0,
       play: true,

@@ -1,50 +1,55 @@
 import React from "react";
 import { InventoryItem } from "./InventoryItem";
+import { DOMAIN, TOKEN } from "@/utils/constant";
 
 const InventoryItemList = async () => {
-  const response = await fetch("http://localhost:4000/collection", {
+  const CollectionResponse = await fetch(DOMAIN + "/collection", {
     headers: {
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTVhNTUwNDcwZDVjZmYyMzU5NTYyNmYiLCJpYXQiOjE3MDA0MTg4MjAsImV4cCI6MTcwMTAyMzYyMH0.ZUsQCkFjrS0MuEL7-1QCYhXV8kWsYP9tKleDl3OZPn0",
+      Authorization: TOKEN,
     },
     cache: "no-cache",
   });
-  const data = await response.json();
+  const CollectionData = await CollectionResponse.json();
+  const ARtistResponse = await fetch(DOMAIN + "/user/followings/", {
+    headers: {
+      Authorization: TOKEN,
+    },
+    cache: "no-cache",
+  });
+  const ARtistData = await ARtistResponse.json();
+
   const playlists = [
-    ...data.collectioans.wished,
-    ...data.collectioans.me,
+    ...CollectionData.collectioans.wished,
+    ...CollectionData.collectioans.me,
   ];
 
   return (
     <div className="h-2/3 pt-3 overflow-auto">
+      <InventoryItem
+        image={"/hill.jpg"}
+        title="Likes"
+        id={"favorites"}
+      />
       {playlists.map((item) => (
         <InventoryItem
           key={item._id}
           // isPlaying
-          image={
-            item.image
-              ? "http://localhost:4000" + item.image
-              : "/hill.jpg"
-          }
+          image={item.image ? DOMAIN + item.image : "/hill.jpg"}
           title={item.title}
           type={item.type}
           id={item._id}
           credit="travis scott"
         />
       ))}
-      {/* <InventoryItem
-        isPlaying
-        image={"/hill.jpg"}
-        title="UTOPIA"
-        type="Album"
-        credit="travis scott"
-      /> 
-       <InventoryItem
-        image={"/girl.jpg"}
-        title="Metro Boomin"
-        type="Artist"
-      />
-      */}
+      {ARtistData.artist.map((item) => (
+        <InventoryItem
+          key={item._id}
+          image={item.image ? DOMAIN + item.image : "/hill.jpg"}
+          title={item.name}
+          type={"artist"}
+          id={item._id}
+        />
+      ))}
     </div>
   );
 };

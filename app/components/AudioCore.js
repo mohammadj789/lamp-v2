@@ -1,9 +1,14 @@
 "use client";
 import useLampStore from "@/store/store";
 import { useStore } from "@/store/useStore";
+import { DOMAIN } from "@/utils/constant";
 import { useEffect, useMemo, useRef } from "react";
 export const AudioCore = () => {
   const track_id = useStore(useLampStore, (state) => state.track.id);
+  const track_collection = useStore(
+    useLampStore,
+    (state) => state.track.collection
+  );
 
   const lastChange = useStore(
     useLampStore,
@@ -18,15 +23,21 @@ export const AudioCore = () => {
   const audio = useRef(new Audio());
 
   useEffect(() => {
-    audio.current.src =
-      "http://localhost:4000/track/stream/" + track_id;
-    audio.current.load();
-    audio.current.play();
-    audio.current.currentTime = 0;
-  }, [track_id, setCurTime]);
+    try {
+      audio.current.src = DOMAIN + "/track/stream/" + track_id;
+
+      audio.current.load();
+      audio.current.play().catch((e) => e);
+      audio.current.currentTime = 0;
+    } catch (error) {
+      console.log(error);
+    }
+  }, [track_id, setCurTime, track_collection]);
+
   audio.current.ontimeupdate = () =>
     setCurTime(audio.current.currentTime);
   audio.current.onended = () => audio.current.pause();
+
   useEffect(() => {
     if (isFinite(volume)) {
       if (mute) {

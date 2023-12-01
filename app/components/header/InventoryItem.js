@@ -1,8 +1,16 @@
 "use client";
+import useLampStore from "@/store/store";
+import { useStore } from "@/store/useStore";
 import Link from "next/link";
 import React from "react";
 
 export const InventoryItem = (props) => {
+  const track_collection = useLampStore(
+    (state) => state.track.collection
+  );
+
+  const isPlaying = track_collection === props.id;
+
   const selectedStyle = " rounded-md bg-gray-800 text-gray-100";
   const unselectedStyle =
     "transition-colors duration-300 transform rounded-md text-gray-200 hover:bg-gray-800 hover:text-gray-200";
@@ -11,7 +19,11 @@ export const InventoryItem = (props) => {
       className={`flex items-center lg:justify-center px-4 py-2 ${
         props.selected ? selectedStyle : unselectedStyle
       }`}
-      href={`/collection/${props.id}`}
+      href={
+        props?.type?.toLowerCase() === "artist"
+          ? `/profile/${props.id}`
+          : `/collection/${props.id}`
+      }
     >
       <img
         className={`w-12 h-12 object-cover flex-shrink-0 ${
@@ -25,7 +37,7 @@ export const InventoryItem = (props) => {
       <div className="mx-4 lg:hidden flex flex-col ">
         <p
           className={`whitespace-nowrap font-[500] ${
-            props.isPlaying && " text-green-600"
+            isPlaying && " text-green-600"
           }`}
         >
           {props.title}

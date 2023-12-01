@@ -1,13 +1,23 @@
+"use client";
 import { BackSVG, ForwardSVG } from "@/svg/Play";
+import { useRouter } from "next/navigation";
 
 export function FloatingHeader(props) {
+  const router = useRouter();
+
   return (
-    <div className="w-full bg-transparent absolute flex justify-between p-2 z-20">
+    <div className="w-full bg-transparent absolute flex justify-between px-5 py-2 z-20">
       <div className="flex items-center gap-2">
-        <button className="flex items-center justify-center bg-black bg-opacity-30 text-white rounded-full h-9 w-9 ">
+        <button
+          onClick={() => router.back()}
+          className="flex items-center justify-center bg-black bg-opacity-30 text-white rounded-full h-9 w-9 "
+        >
           <BackSVG />
         </button>
-        <button className="flex items-center justify-center bg-black bg-opacity-30 text-white rounded-full h-9 w-9 ">
+        <button
+          onClick={() => router.forward()}
+          className="flex items-center justify-center bg-black bg-opacity-30 text-white rounded-full h-9 w-9 "
+        >
           <ForwardSVG />
         </button>
       </div>

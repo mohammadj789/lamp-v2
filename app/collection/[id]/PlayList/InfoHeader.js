@@ -1,6 +1,8 @@
 import React from "react";
 
 export function InfoHeader(props) {
+  console.log(props.theme, "dfsdfsdfsdfsd");
+
   let bottomContent;
   if (props.type === "artist")
     bottomContent = <p>{props.listener} monthly listeners</p>;
@@ -21,7 +23,7 @@ export function InfoHeader(props) {
         </span>
       </div>
     );
-  else if (props.type === "profile")
+  else if (props.type === "user")
     bottomContent = (
       <div className="flex items-center gap-3 flex-wrap">
         <span className="flex items-center shrink-0 gap-2">
@@ -29,7 +31,7 @@ export function InfoHeader(props) {
         </span>
         <p className="shrink-0">{props.user.followers} followers</p>
         <span className="shrink-0">
-          {props.user.following} following
+          {props.user.followings} following
         </span>
       </div>
     );
@@ -37,8 +39,10 @@ export function InfoHeader(props) {
   return (
     <div
       className={`w-full mb-4 pt-14 px-3 ${
-        props.type === "profile" ? "h-auto" : "h-96"
-      } bg-gradient-to-b from-emerald-900 to-black justify-end flex gap-5 sm:flex-col relative `}
+        props.type === "user" ? "h-auto" : "h-96"
+      } bg-gradient-to-b ${
+        props.theme ? `from-[${props.theme}]` : "from-emerald-900"
+      } to-black justify-end flex gap-5 sm:flex-col relative `}
     >
       {props.span ? (
         <div className="absolute w-full h-full top-0 left-0 right-0 bottom-0 z-0">
@@ -52,7 +56,7 @@ export function InfoHeader(props) {
         <div className="xl:w-56 w-60 sm:w-full sm:h-3/5 overflow-hidden flex items-end sm:justify-center flex-shrink-0 sm:flex-shrink">
           <img
             className={`w-full sm:h-full sm:w-auto  ${
-              props.type === "profile" ? "rounded-full" : "rounded-md"
+              props.type === "user" ? "rounded-full" : "rounded-md"
             } aspect-square object-cover`}
             alt="playlist thumb nail"
             src={props.image}

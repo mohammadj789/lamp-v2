@@ -1,11 +1,20 @@
 "use client";
-import { PlaySVG } from "@/svg/Play";
+import { PauseSVG, PlaySVG } from "@/svg/Play";
 import useLampStore from "@/store/store";
 import React from "react";
+import { convertSecondsToMMSS } from "@/utils/secondsToMuinets";
 
 export default function PlayListItem(props) {
+  const track_id = useLampStore((state) => state.track.id);
+  const Collection_id = useLampStore(
+    (state) => state.track.collection
+  );
   const setTrack = useLampStore((state) => state.setTrack);
+  const setPause = useLampStore((state) => state.togglePause);
+  const play = useLampStore((state) => state.play);
 
+  const isPlaying =
+    track_id === props.id && Collection_id === props.collection;
   return (
     <div
       className="h-14 rounded-md px-3
@@ -16,18 +25,25 @@ export default function PlayListItem(props) {
           {props.index + 1}
         </span>
         <span
-          onClick={() =>
-            setTrack({
-              title: props.song.title,
-              credit: props.song.artist,
-              image: props.image,
-              id: props.id,
-              lyric: props.song.lyric,
-            })
-          }
+          onClick={() => {
+            isPlaying && play
+              ? setPause()
+              : setTrack({
+                  title: props.song.title,
+                  credit: props.song.artist,
+                  image: props.image,
+                  id: props.id,
+                  lyric: props.song.lyric,
+                  collection: props.collection,
+                });
+          }}
           className="opacity-0 h-5 group-hover:opacity-100 cursor-pointer"
         >
-          <PlaySVG />
+          {isPlaying && play ? (
+            <PauseSVG width={"20px"} height={"20px"} fill={"#fff"} />
+          ) : (
+            <PlaySVG width={"20px"} height={"20px"} fill={"#fff"} />
+          )}
         </span>
       </span>
       <img
@@ -37,7 +53,13 @@ export default function PlayListItem(props) {
       />
 
       <div className="group font-medium flex w-auto flex-col overflow-hidden ">
-        <p className="font-[500] line-clamp-1">{props.song.title}</p>
+        <p
+          className={`font-[500] line-clamp-1 ${
+            isPlaying ? "text-green-600" : ""
+          }`}
+        >
+          {props.song.title}
+        </p>
         <p className="text-xs text-gray-400 line-clamp-1 group-hover:text-white">
           {props.song.artist}
         </p>
@@ -47,7 +69,9 @@ export default function PlayListItem(props) {
         {props.song.album}
       </span>
       <div className="md:hidden">{props.add || props.stream}</div>
-      <span className="sm:hidden">{props.song.duration}</span>
+      <span className="sm:hidden">
+        {convertSecondsToMMSS(props.song.duration)}
+      </span>
     </div>
   );
 }
