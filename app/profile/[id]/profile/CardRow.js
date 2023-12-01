@@ -19,8 +19,11 @@ export function CardRow(props) {
       </div>
       <div className=" flex flex-nowrap gap-[calc(10%/4)] lg:gap-[calc(10%/3)] md:gap-[calc(10%/2)] sm:gap-[calc(10%/1)] overflow-hidden sm:overflow-auto">
         {props.data.map((item) => (
-          <div className="w-[calc(90%/5)]  lg:w-[calc(90%/4)] md:w-[calc(90%/3)] sm:w-[calc(90%/2)] flex-shrink-0 ">
-            <Card item={item} key={item._id} />
+          <div
+            key={item._id}
+            className="w-[calc(90%/5)]  lg:w-[calc(90%/4)] md:w-[calc(90%/3)] sm:w-[calc(90%/2)] flex-shrink-0 "
+          >
+            <Card item={item} />
           </div>
         ))}
       </div>

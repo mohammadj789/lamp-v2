@@ -1,8 +1,9 @@
 import { PlaySVG } from "@/svg/Play";
 import { DOMAIN } from "@/utils/constant";
+import { fetchCollections } from "@/utils/fetchCollections";
 import React from "react";
 
-const Card = ({ item }) => {
+const Card = async ({ item }) => {
   return (
     <div className="font-normal flex-shrink-0 h-full  gap-1 rounded-md flex flex-col items-start justify-start hover:bg-white/30 overflow-hidden text-white p-1  group">
       <div className="aspect-square flex-shrink-0 grid place-content-center relative">
