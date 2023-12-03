@@ -21,8 +21,8 @@ export const InventoryItem = (props) => {
       }`}
       href={
         props?.type?.toLowerCase() === "artist"
-          ? `/profile/${props.id}`
-          : `/collection/${props.id}`
+          ? `/app/profile/${props.id}`
+          : `/app/collection/${props.id}`
       }
     >
       <img

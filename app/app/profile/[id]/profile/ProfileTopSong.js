@@ -1,9 +1,8 @@
 "use client";
 import React, { useState } from "react";
 
-import PlayListItem from "@/app/collection/[id]/PlayList/PlayListItem";
-import { data } from "autoprefixer";
 import { DOMAIN } from "@/utils/constant";
+import PlayListItem from "@/app/app/collection/[id]/PlayList/PlayListItem";
 
 export function ProfileTopSong(props) {
   const [showMore, setShowMore] = useState(false);

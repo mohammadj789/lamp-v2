@@ -29,7 +29,7 @@ export default async function PlayList(props) {
         credit={{
           img: "/girl.jpg",
           name: data?.owner?.owner_name,
-          link: "/",
+          link: "/app",
         }}
         time={{ hour: 30, minutes: 22 }}
         count={data?.tracks?.length}

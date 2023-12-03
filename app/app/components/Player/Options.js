@@ -35,7 +35,7 @@ export function Optioans(props) {
       </button>
       {lyric && (
         <Link
-          href={"/lyric/" + lyric}
+          href={"/app/lyric/" + lyric}
           className={`text-gray-400 rounded-full flex items-center h-8 w-8 p-1 hover:text-white`}
         >
           <MicSVG />

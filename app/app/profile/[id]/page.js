@@ -2,11 +2,10 @@ import React, { Suspense } from "react";
 
 import { notFound } from "next/navigation";
 
-import { InfoHeader } from "@/app/collection/[id]/PlayList/InfoHeader";
-
 import { CardRow } from "./profile/CardRow";
 import { ProfileTopSong } from "./profile/ProfileTopSong";
 import { DOMAIN } from "@/utils/constant";
+import { InfoHeader } from "../../collection/[id]/PlayList/InfoHeader";
 
 const Profile = async ({ params }) => {
   const response = await fetch(DOMAIN + "/user/" + params.id, {
