@@ -1,5 +1,10 @@
+import { storage } from "@/utils/CookieStorage";
 import { create } from "zustand";
-import { persist, devtools } from "zustand/middleware";
+import {
+  persist,
+  devtools,
+  createJSONStorage,
+} from "zustand/middleware";
 const store = (set, get) => ({
   audio: null,
   track: {
@@ -38,10 +43,12 @@ const store = (set, get) => ({
   toggleMute: () => set({ mute: !get().mute }),
   changeVolume: (volume) => set({ volume: volume }),
 });
+
 const useLampStore = create(
   devtools(
     persist(store, {
       name: "lamp",
+      storage: createJSONStorage(() => storage),
       partialize: (state) =>
         Object.fromEntries(
           Object.entries(state).filter(([key]) =>

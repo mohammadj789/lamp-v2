@@ -1,7 +1,9 @@
 "use client";
+import useUserStore from "@/store/userStore";
 import { DOMAIN } from "@/utils/constant";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 
 const LoginRequest = async (url, body) => {
@@ -9,15 +11,21 @@ const LoginRequest = async (url, body) => {
   return response.data;
 };
 function LoginForm({ setLogin }) {
+  const login = useUserStore((state) => state.login);
   const email = useRef();
   const password = useRef();
+  const router = useRouter();
   const { mutate, data, error } = useMutation({
-    mutationKey: ["user"],
+    mutationKey: ["login"],
     mutationFn: () =>
       LoginRequest(DOMAIN + "/auth/login/", {
         email: email.current.value,
         password: password.current.value,
       }),
+    onSuccess: (data) => {
+      login(data.data.token, data.data.user);
+      router.push("/app");
+    },
   });
 
   return (
@@ -68,8 +76,9 @@ function RegisterForm({ setLogin }) {
   const username = useRef();
   const email = useRef();
   const password = useRef();
-
-  const { mutate, data, error } = useMutation({
+  const router = useRouter();
+  const login = useUserStore((state) => state.login);
+  const { mutate, error } = useMutation({
     mutationKey: ["signup"],
     mutationFn: () =>
       LoginRequest(DOMAIN + "/auth/signup/", {
@@ -78,6 +87,10 @@ function RegisterForm({ setLogin }) {
         email: email.current.value,
         password: password.current.value,
       }),
+    onSuccess: (data) => {
+      login(data.data.token, data.data.user);
+      router.push("/app");
+    },
   });
 
   return (

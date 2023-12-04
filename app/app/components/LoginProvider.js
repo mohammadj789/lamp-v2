@@ -1,14 +1,40 @@
 "use client";
 import { useStore } from "@/store/useStore";
 import useUserStore from "@/store/userStore";
+import { DOMAIN } from "@/utils/constant";
+import { getRequest } from "@/utils/getRequest";
+import { useMutation } from "@tanstack/react-query";
 
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const LoginProvider = ({ children }) => {
   const router = useRouter();
-  const login = useStore(useUserStore, (state) => state.token);
-  if (!login) {
+  const login = useUserStore((state) => state.login);
+  const logout = useUserStore((state) => state.logout);
+  const token = useUserStore((state) => state.token);
+  const isAuth = useUserStore((state) => state.isAuth);
+
+  const { mutate, error, isPending } = useMutation({
+    mutationKey: ["user"],
+    mutationFn: () =>
+      getRequest(DOMAIN + "/auth/", {
+        Authorization: "Bearer " + token,
+      }),
+    onSuccess: (data) => login(token, data.data.user),
+  });
+
+  useEffect(() => {
+    if (token && !isAuth) {
+      mutate();
+    }
+  }, [token, isAuth, mutate]);
+
+  if (isPending || (!isPending && token && !isAuth)) {
+    return <p>loading</p>;
+  } else if (!isAuth || error) {
     router.push("/auth");
+    logout();
   } else return children;
 };
 

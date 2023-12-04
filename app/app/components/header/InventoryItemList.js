@@ -1,11 +1,13 @@
 "use client";
 import React from "react";
 import { InventoryItem } from "./InventoryItem";
-import { DOMAIN, TOKEN } from "@/utils/constant";
+import { DOMAIN } from "@/utils/constant";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import useUserStore from "@/store/userStore";
 
 const InventoryItemList = () => {
+  const TOKEN = useUserStore((state) => state.token);
   //collections
   const { data: CollectionData, isLoading: CollectionLoading } =
     useQuery({
@@ -13,7 +15,7 @@ const InventoryItemList = () => {
       queryFn: async () => {
         const response = await axios.get(DOMAIN + "/collection", {
           headers: {
-            Authorization: TOKEN,
+            Authorization: "Bearer " + TOKEN,
           },
         });
         return response.data;
