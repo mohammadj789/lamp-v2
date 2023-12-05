@@ -5,6 +5,7 @@ import ReactSlider from "react-slider";
 export const ProgressBar = (props) => {
   return (
     <ReactSlider
+      disabled={props.disabled}
       className={`${
         props.height ?? "h-1"
       } w-full h-1 rounded-3xl group`}

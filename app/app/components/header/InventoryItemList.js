@@ -63,6 +63,7 @@ const InventoryItemList = () => {
         image={"/hill.jpg"}
         title="Likes"
         id={"favorites"}
+        type={"favorite"}
       />
       {playlists.map((item) => (
         <InventoryItem

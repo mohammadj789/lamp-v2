@@ -16,6 +16,7 @@ export function ControllButtons(props) {
   return (
     <div className="flex gap-6 sm:gap-0 justify-between items-center">
       <button
+        disabled={props.disabled}
         className={`text-gray-400 rounded-full ${
           props.size ?? "h-8 w-8"
         } p-1  hover:text-white`}
@@ -27,6 +28,7 @@ export function ControllButtons(props) {
         />
       </button>
       <button
+        disabled={props.disabled}
         className={`text-gray-400 rounded-full ${
           props.size ?? "h-8 w-8"
         } p-1  hover:text-white`}
@@ -39,6 +41,7 @@ export function ControllButtons(props) {
       </button>
       {!props.play ? (
         <button
+          disabled={props.disabled}
           className={`flex items-center justify-center bg-white text-black rounded-full flex-shrink-0 ${
             props.size ?? "h-8 w-8"
           } ps-[.4rem]  p-1`}
@@ -51,6 +54,7 @@ export function ControllButtons(props) {
         </button>
       ) : (
         <button
+          disabled={props.disabled}
           className={`flex items-center justify-center bg-white text-black rounded-full flex-shrink-0 ${
             props.size ?? "h-8 w-8"
           } `}
@@ -63,6 +67,7 @@ export function ControllButtons(props) {
         </button>
       )}
       <button
+        disabled={props.disabled}
         className={`text-gray-400 rounded-full ${
           props.size ?? "h-8 w-8"
         } p-1  hover:text-white`}
@@ -74,6 +79,7 @@ export function ControllButtons(props) {
         />
       </button>
       <button
+        disabled={props.disabled}
         className={`text-gray-400 rounded-full ${
           props.size ?? "h-8 w-8"
         } p-1  hover:text-white`}

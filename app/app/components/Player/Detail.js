@@ -3,14 +3,24 @@
 import useLampStore from "@/store/store";
 import { useStore } from "@/store/useStore";
 import useUserStore from "@/store/userStore";
-import { HeartSVG } from "@/svg/Play";
+import { FillHeartSVG, HeartSVG } from "@/svg/Play";
 import { DOMAIN } from "@/utils/constant";
-import { useMutation } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { revalidateTag } from "next/cache";
 
 export function Detail(props) {
   const detail = useStore(useLampStore, (state) => state.track);
   const TOKEN = useUserStore((state) => state.token);
+  const queryClient = useQueryClient();
+  const { data } = useQuery({ queryKey: ["favorites"] });
+  const isfave = data?.favorits.find(
+    (item) => item._id === detail.id
+  );
+
   const FetchLike = async () => {
     const response = await fetch(
       DOMAIN + "/track/favorite/" + detail?.id,
@@ -27,7 +37,8 @@ export function Detail(props) {
   const { mutate } = useMutation({
     mutationKey: ["like"],
     mutationFn: FetchLike,
-    // onSuccess: () => revalidateTag("collection"),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["favorites"] }),
   });
 
   return (
@@ -48,10 +59,11 @@ export function Detail(props) {
       </div>
 
       <button
+        disabled={!detail?.id}
         onClick={() => mutate()}
         className="flex justify-center w-8 h-full absolute right-0 bg-black items-center  text-gray-300"
       >
-        <HeartSVG />
+        {isfave ? <FillHeartSVG /> : <HeartSVG />}
       </button>
     </div>
   );

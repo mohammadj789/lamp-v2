@@ -5,16 +5,15 @@ import { InfoHeader } from "./InfoHeader";
 import { notFound } from "next/navigation";
 import { DOMAIN } from "@/utils/constant";
 
-export default async function PlayList(props) {
-  const responseData = await props.data;
+export default function PlayList(props) {
   const data = props.favorite
     ? {
-        tracks: responseData.favorits,
+        tracks: props.data.favorits,
         title: "Favorites",
         owner: { owner_name: "me" },
         type: "playlist",
       }
-    : responseData.collection;
+    : props.data.collection;
 
   if (!data) return notFound();
   console.log(data);

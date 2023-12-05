@@ -33,7 +33,7 @@ const LoginProvider = ({ children }) => {
   if (isPending || (!isPending && token && !isAuth)) {
     return <p>loading</p>;
   } else if (!isAuth || error) {
-    router.push("/auth");
+    typeof window !== "undefined" && router.push("/auth");
     logout();
   } else return children;
 };
