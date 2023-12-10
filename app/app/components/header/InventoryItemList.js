@@ -27,28 +27,12 @@ const InventoryItemList = () => {
     queryFn: async () => {
       const response = await axios.get(DOMAIN + "/user/followings/", {
         headers: {
-          Authorization: TOKEN,
+          Authorization: "Bearer " + TOKEN,
         },
       });
       return response.data;
     },
   });
-
-  // const CollectionResponse = await fetch(DOMAIN + "/collection", {
-  //   headers: {
-  //     Authorization: TOKEN,
-  //   },
-  //   cache: "no-cache",
-  // });
-  // const CollectionData = await CollectionResponse.json();
-  // const ARtistResponse = await fetch(DOMAIN + "/user/followings/", {
-  //   headers: {
-  //     Authorization: TOKEN,
-  //   },
-  //   cache: "no-cache",
-  // });
-  // const ARtistData = await ARtistResponse.json();
-  console.log(CollectionData);
 
   const playlists = CollectionData
     ? [

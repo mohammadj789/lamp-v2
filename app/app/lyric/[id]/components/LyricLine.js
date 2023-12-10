@@ -5,7 +5,6 @@ export const LyricLine = forwardRef(
   ({ detail, passed, onClick, isCurrent }, ref) => {
     return (
       <button
-        on={() => console.log("load")}
         className={`
           ${
             passed &&

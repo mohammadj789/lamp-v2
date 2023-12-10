@@ -11,6 +11,20 @@ module.exports = {
         Poppins: ['"Poppins"'],
         yekan: ['"persian"'],
       },
+      keyframes: {
+        bounceFade: {
+          "0%": {
+            opacity: 1,
+          },
+          "100%": {
+            opacity: 1,
+          },
+          "60%": {
+            opacity: 0,
+          },
+        },
+      },
+      animation: { "bouncing-dots": "bounceFade 1s infinite ease" },
     },
     screens: {
       "2xl": { max: "1535px" },

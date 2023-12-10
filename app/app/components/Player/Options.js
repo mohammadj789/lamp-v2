@@ -28,11 +28,12 @@ export function Optioans(props) {
 
   return (
     <div className="w-full max-w-[17rem] gap-1 cursor-pointer sm:hidden flex items-center">
-      <button
+      <Link
+        href={"/app/queue"}
         className={`text-gray-400 rounded-full flex items-center h-8 w-8 p-1 hover:text-white`}
       >
         <MenuSVG />
-      </button>
+      </Link>
       {lyric && (
         <Link
           href={"/app/lyric/" + lyric}

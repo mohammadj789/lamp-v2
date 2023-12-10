@@ -16,7 +16,6 @@ export default function PlayList(props) {
     : props.data.collection;
 
   if (!data) return notFound();
-  console.log(data);
 
   return (
     <div className="overflow-auto h-full sm:pb-16">
@@ -50,7 +49,8 @@ export default function PlayList(props) {
               lyric: song?.lyric,
               duration: song?.duration || 200,
             }}
-            collection={data._id || "favorites"}
+            collection_id={data._id || "favorites"}
+            collection={data.tracks}
             index={i}
           />
         ))}

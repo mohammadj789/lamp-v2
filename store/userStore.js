@@ -23,21 +23,22 @@ const init = {
 };
 const store = (set, get) => ({
   ...init,
-  login: (token, user) =>
+  login: (token, user) => {
     set({
       token: token,
       isAuth: true,
       user: {
         username: user.username,
         name: user.name,
-        favorite_songs: user.favorite_songs,
-        favorite_collections: user.favorite_collections,
+        favorite_songs: user.favorit_songs,
+        favorite_collections: user.favorit_collections,
         tracks: user.tracks,
-        collections: user.collections,
-        img: user.img,
+        collections: user.Collections,
+        img: user.image,
         role: user.role,
       },
-    }),
+    });
+  },
   logout: () => set({ ...init }),
 });
 const useUserStore = create(

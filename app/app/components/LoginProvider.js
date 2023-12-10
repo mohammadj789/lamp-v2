@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/app/loading";
 import { useStore } from "@/store/useStore";
 import useUserStore from "@/store/userStore";
 import { DOMAIN } from "@/utils/constant";
@@ -30,10 +31,18 @@ const LoginProvider = ({ children }) => {
     }
   }, [token, isAuth, mutate]);
 
-  if (isPending || (!isPending && token && !isAuth)) {
-    return <p>loading</p>;
+  if (
+    isPending ||
+    (!isPending && token && !isAuth) ||
+    typeof window === "undefined"
+  ) {
+    return (
+      <div className="w-screen h-screen grid place-content-center">
+        <Loading />
+      </div>
+    );
   } else if (!isAuth || error) {
-    typeof window !== "undefined" && router.push("/auth");
+    router.push("/auth");
     logout();
   } else return children;
 };

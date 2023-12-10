@@ -17,9 +17,12 @@ export const AudioCore = () => {
 
   const setCurTime = useLampStore((state) => state.updateTime);
   const setDuration = useLampStore((state) => state.setDuration);
-  const play = useStore(useLampStore, (state) => state.play);
-  const volume = useStore(useLampStore, (state) => state.volume);
-  const mute = useStore(useLampStore, (state) => state.mute);
+  const togglePause = useLampStore((state) => state.togglePause);
+  const play = useLampStore((state) => state.play);
+  const volume = useLampStore((state) => state.volume);
+  const mute = useLampStore((state) => state.mute);
+  const QueueToNext = useLampStore((state) => state.QueueToNext);
+
   const audio = useRef(
     typeof window !== "undefined" ? new Audio() : null
   );
@@ -30,15 +33,28 @@ export const AudioCore = () => {
       audio.current.load();
       audio.current.play().catch((e) => e);
       audio.current.currentTime = 0;
-    } catch (error) {
-      console.log(error);
-    }
-  }, [track_id, setCurTime, track_collection]);
-  if (typeof window !== "undefined") {
-    audio.current.ontimeupdate = () =>
-      setCurTime(audio.current.currentTime);
-    audio.current.onended = () => audio.current.pause();
-  }
+      audio.current.ontimeupdate = () =>
+        setCurTime(audio.current.currentTime);
+      audio.current.onended = () => {
+        QueueToNext();
+
+        audio.current.pause();
+      };
+      audio.current.onloadedmetadata = () =>
+        setDuration(audio.current.duration);
+    } catch (error) {}
+    return () => {
+      audio.current.onended = null;
+      audio.current.ontimeupdate = null;
+      audio.current.onloadedmetadata = null;
+    };
+  }, [
+    track_id,
+    setCurTime,
+    track_collection,
+    setDuration,
+    QueueToNext,
+  ]);
 
   useEffect(() => {
     if (isFinite(volume)) {
@@ -53,11 +69,6 @@ export const AudioCore = () => {
       audio.current.currentTime = lastChange;
     }
   }, [lastChange, audio]);
-  useEffect(() => {
-    if (audio.current.duration) {
-      setDuration(audio.current.duration);
-    }
-  }, [play, audio?.current?.duration, setDuration]);
 
   useEffect(() => {
     if (!play) {

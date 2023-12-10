@@ -9,12 +9,18 @@ export default function PlayListItem(props) {
   const Collection_id = useLampStore(
     (state) => state.track.collection
   );
+  const queue = useLampStore((state) => state.queue);
+  const setQueue = useLampStore((state) => state.setQueue);
   const setTrack = useLampStore((state) => state.setTrack);
   const setPause = useLampStore((state) => state.togglePause);
   const play = useLampStore((state) => state.play);
 
   const isPlaying =
-    track_id === props.id && Collection_id === props.collection;
+    props.isPlaying === false
+      ? false
+      : (track_id === props.id &&
+          Collection_id === props.collection_id) ||
+        props.isPlaying;
   return (
     <div
       className="h-14 rounded-md px-3
@@ -26,16 +32,21 @@ export default function PlayListItem(props) {
         </span>
         <span
           onClick={() => {
-            isPlaying && play
-              ? setPause()
-              : setTrack({
-                  title: props.song.title,
-                  credit: props.song.artist,
-                  image: props.image,
-                  id: props.id,
-                  lyric: props.song.lyric,
-                  collection: props.collection,
-                });
+            if (isPlaying && play) {
+              setPause();
+            } else {
+              // if (queue.length === 0) {
+              //   setQueue(props.collection);
+              // }
+              setTrack({
+                title: props.song.title,
+                credit: props.song.artist,
+                image: props.image,
+                id: props.id,
+                lyric: props.song.lyric,
+                collection: props.collection_id,
+              });
+            }
           }}
           className="opacity-0 h-5 group-hover:opacity-100 cursor-pointer"
         >

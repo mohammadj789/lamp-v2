@@ -1,8 +1,6 @@
 import React from "react";
 
 export function InfoHeader(props) {
-  console.log(props.theme, "dfsdfsdfsdfsd");
-
   let bottomContent;
   if (props.type === "artist")
     bottomContent = <p>{props.listener} monthly listeners</p>;

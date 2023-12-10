@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@/store/userStore";
 import { DOMAIN } from "@/utils/constant";
 import axios from "axios";
+import Loading from "@/app/loading";
 
 const Page = () => {
   const TOKEN = useUserStore((state) => state.token);
@@ -19,6 +20,7 @@ const Page = () => {
       return response.data;
     },
   });
+  if (isLoading || !data) return <Loading />;
   if (data) return <PlayList favorite data={data} />;
 };
 export default Page;
