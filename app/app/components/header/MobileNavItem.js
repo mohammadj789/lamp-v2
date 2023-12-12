@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export const MobileNavItem = (props) => {
@@ -5,11 +6,11 @@ export const MobileNavItem = (props) => {
   const unselectedStyle =
     "transition-colors duration-300 transform text-gray-400";
   return (
-    <a
+    <Link
       className={`flex flex-col items-center w-1/3  ${
         props.selected ? selectedStyle : unselectedStyle
       }`}
-      href="/#"
+      href={props.link}
     >
       <svg
         className="w-8 h-8"
@@ -26,6 +27,6 @@ export const MobileNavItem = (props) => {
         />
       </svg>
       <p className="text-[.65rem] font-light">{props.title}</p>
-    </a>
+    </Link>
   );
 };

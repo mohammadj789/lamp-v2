@@ -44,13 +44,25 @@ const Profile = async ({ params }) => {
       )}
       {/* <div className="p-3 grid w-full max-w-5xl gap-6 grid-cols-[repeat(6,1fr)] lg:grid-cols-[repeat(5,1fr)]  md:grid-cols-[repeat(4,1fr)] grid-flow-col sm:grid-cols-[repeat(3,1fr)] "> */}
       {filtered.Single.length > 0 && (
-        <CardRow title={"Single Tracks"} data={filtered.Single} />
+        <CardRow
+          type={"collection"}
+          title={"Single Tracks"}
+          data={filtered.Single}
+        />
       )}
       {filtered.album.length > 0 && (
-        <CardRow title={"Albums"} data={filtered.album} />
+        <CardRow
+          type={"collection"}
+          title={"Albums"}
+          data={filtered.album}
+        />
       )}
       {filtered.playlist.length > 0 && (
-        <CardRow title={"playlists"} data={filtered.playlist} />
+        <CardRow
+          type={"collection"}
+          title={"playlists"}
+          data={filtered.playlist}
+        />
       )}
     </div>
   );

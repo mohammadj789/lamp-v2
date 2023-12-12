@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import useUserStore from "@/store/userStore";
 
-const InventoryItemList = () => {
+const InventoryItemList = ({ hide }) => {
   const TOKEN = useUserStore((state) => state.token);
   //collections
   const { data: CollectionData, isLoading: CollectionLoading } =
@@ -48,9 +48,11 @@ const InventoryItemList = () => {
         title="Likes"
         id={"favorites"}
         type={"favorite"}
+        hide
       />
       {playlists.map((item) => (
         <InventoryItem
+          hide
           key={item._id}
           // isPlaying
           image={item.image ? DOMAIN + item.image : "/hill.jpg"}
@@ -62,6 +64,7 @@ const InventoryItemList = () => {
       ))}
       {ARtistData?.artist?.map((item) => (
         <InventoryItem
+          hide
           key={item._id}
           image={item.image ? DOMAIN + item.image : "/hill.jpg"}
           title={item.name}

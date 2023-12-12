@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export const NavLinks = (props) => {
@@ -5,11 +6,11 @@ export const NavLinks = (props) => {
   const unselectedStyle =
     "transition-colors duration-300 transform rounded-md text-gray-400 hover:bg-gray-800 hover:text-gray-200";
   return (
-    <a
+    <Link
       className={`flex items-center lg:justify-center px-4 py-2 ${
         props.selected ? selectedStyle : unselectedStyle
       }`}
-      href="/#"
+      href={props.link}
     >
       <svg
         className="w-6 h-6"
@@ -29,6 +30,6 @@ export const NavLinks = (props) => {
       <span className="mx-4 font-bold lin lg:hidden">
         {props.title}
       </span>
-    </a>
+    </Link>
   );
 };

@@ -23,7 +23,7 @@ export function CardRow(props) {
             key={item._id}
             className="w-[calc(90%/5)]  lg:w-[calc(90%/4)] md:w-[calc(90%/3)] sm:w-[calc(90%/2)] flex-shrink-0 "
           >
-            <Card item={item} />
+            <Card type={props.type} item={item} />
           </div>
         ))}
       </div>

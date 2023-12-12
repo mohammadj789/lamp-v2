@@ -11,12 +11,14 @@ export const InventoryItem = (props) => {
 
   const isPlaying = track_collection === props.id;
 
-  const selectedStyle = " rounded-md bg-gray-800 text-gray-100";
+  const selectedStyle = "rounded-md bg-gray-800 text-gray-100";
   const unselectedStyle =
     "transition-colors duration-300 transform rounded-md text-gray-200 hover:bg-gray-800 hover:text-gray-200";
   return (
     <Link
-      className={`flex items-center lg:justify-center px-4 py-2 ${
+      className={`flex items-center ${
+        !props.hide ? "lg:justify-center" : ""
+      }  px-4 py-2 ${
         props.selected ? selectedStyle : unselectedStyle
       }`}
       href={
@@ -36,7 +38,11 @@ export const InventoryItem = (props) => {
         src={props.image ?? "/montain.jpg"}
         alt="inventory item"
       />
-      <div className="mx-4 lg:hidden flex flex-col ">
+      <div
+        className={`mx-4 ${
+          !props.hide ? "lg:hidden" : ""
+        } flex flex-col `}
+      >
         <p
           className={`whitespace-nowrap font-[500] ${
             isPlaying && " text-green-600"

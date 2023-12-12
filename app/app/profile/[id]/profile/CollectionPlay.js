@@ -22,6 +22,7 @@ export function CollectionPlay({ id }) {
     },
   });
   const clickHandler = (e) => {
+    e.preventDefault();
     e.stopPropagation();
     if (collection === id) {
       if (play) togglePause();
@@ -34,7 +35,7 @@ export function CollectionPlay({ id }) {
   return (
     <button
       onClick={clickHandler}
-      className="absolute p-2 bottom-1 opacity-0 transition-all translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 right-1 grid place-content-center rounded-full w-1/4 aspect-square bg-green-500 text-black"
+      className=" absolute p-2 bottom-1 opacity-0 transition-all translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 right-1 grid place-content-center rounded-full w-1/4 aspect-square bg-green-500 text-black"
     >
       {collection === id && play ? <PauseSVG /> : <PlaySVG />}
     </button>
