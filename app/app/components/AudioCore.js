@@ -17,7 +17,7 @@ export const AudioCore = () => {
 
   const setCurTime = useLampStore((state) => state.updateTime);
   const setDuration = useLampStore((state) => state.setDuration);
-  const togglePause = useLampStore((state) => state.togglePause);
+  const togglePlay = useLampStore((state) => state.togglePlay);
   const play = useLampStore((state) => state.play);
   const volume = useLampStore((state) => state.volume);
   const mute = useLampStore((state) => state.mute);
@@ -32,6 +32,7 @@ export const AudioCore = () => {
       audio.current.src = DOMAIN + "/track/stream/" + track_id;
       audio.current.load();
       audio.current.play().catch((e) => e);
+      togglePlay();
       audio.current.currentTime = 0;
       audio.current.ontimeupdate = () =>
         setCurTime(audio.current.currentTime);

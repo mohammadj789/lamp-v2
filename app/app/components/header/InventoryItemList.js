@@ -48,11 +48,11 @@ const InventoryItemList = ({ hide }) => {
         title="Likes"
         id={"favorites"}
         type={"favorite"}
-        hide
+        hide={hide}
       />
       {playlists.map((item) => (
         <InventoryItem
-          hide
+          hide={hide}
           key={item._id}
           // isPlaying
           image={item.image ? DOMAIN + item.image : "/hill.jpg"}
