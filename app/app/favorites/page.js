@@ -6,20 +6,10 @@ import useUserStore from "@/store/userStore";
 import { DOMAIN } from "@/utils/constant";
 import axios from "axios";
 import Loading from "@/app/loading";
+import { useFavorites } from "@/hooks/Requests/useFavorites";
 
 const Page = () => {
-  const TOKEN = useUserStore((state) => state.token);
-  const { data, isLoading } = useQuery({
-    queryKey: ["favorites"],
-    queryFn: async () => {
-      const response = await axios.get(DOMAIN + "/track/favorite", {
-        headers: {
-          Authorization: "Bearer " + TOKEN,
-        },
-      });
-      return response.data;
-    },
-  });
+  const { data, isLoading } = useFavorites();
   if (isLoading || !data) return <Loading />;
   if (data) return <PlayList favorite data={data} />;
 };

@@ -3,10 +3,13 @@ import useLampStore from "@/store/store";
 import React from "react";
 import PlayListItem from "../collection/[id]/PlayList/PlayListItem";
 import { DOMAIN } from "@/utils/constant";
+import QueueItem from "./components/QueueItem";
 
 const Page = () => {
   const queue = useLampStore((state) => state.queue);
   const track = useLampStore((state) => state.track);
+
+  console.log(queue);
 
   return (
     <main className="w-full text-white px-3 flex flex-col gap-3 pt-16">
@@ -26,21 +29,23 @@ const Page = () => {
               lyric: track.lyric,
               duration: track?.duration || 200,
             }}
-            index={1}
+            index={0}
           />
         </div>
       )}
       <div>
         <h3>Queue</h3>
         {queue.map((song, i) => (
-          <PlayListItem
-            key={song._id}
-            id={song._id}
+          <QueueItem
+            key={song._id || song.id}
+            id={song._id || song.id}
             isPlaying={false}
-            image={DOMAIN + song.image}
+            image={song.image}
             song={{
               title: song.title,
-              artist: song.artist.artist_name,
+              artist: song.artist
+                ? song.artist.artist_name
+                : song.credit,
               album: song?.album || "21",
               genre: song?.genre,
               lyric: song?.lyric,

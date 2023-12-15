@@ -1,8 +1,10 @@
 "use client";
-import { PauseSVG, PlaySVG } from "@/svg/Play";
+import { HeartSVG, PauseSVG, PlaySVG } from "@/svg/Play";
 import useLampStore from "@/store/store";
 import React from "react";
 import { convertSecondsToMMSS } from "@/utils/secondsToMuinets";
+import { LikeButton } from "@/app/app/components/Player/LikeButton";
+import { MenueButton } from "./MenueButton";
 
 export default function PlayListItem(props) {
   const track_id = useLampStore((state) => state.track.id);
@@ -24,7 +26,7 @@ export default function PlayListItem(props) {
   return (
     <div
       className="h-14 rounded-md px-3
-          grid grid-cols-[auto_auto_1fr_1fr_.6fr_.2fr] md:grid-cols-[auto_auto_1fr_1fr_.2fr] sm:grid-cols-[auto_auto_1fr] gap-3 items-center hover:bg-white/20 transition-all group"
+          grid grid-cols-[auto_auto_1fr_1fr_.6fr_.2fr_auto_auto] md:grid-cols-[auto_auto_1fr_1fr_.2fr_auto_auto] sm:grid-cols-[auto_auto_1fr_auto_auto] gap-3 items-center hover:bg-white/20 transition-all group"
     >
       <span className="relative h-8 aspect-square flex items-center overflow-hidden">
         <span className="group-hover:hidden text-sm text-gray-400">
@@ -83,6 +85,17 @@ export default function PlayListItem(props) {
       <span className="sm:hidden">
         {convertSecondsToMMSS(props.song.duration)}
       </span>
+
+      <span className="sm:hidden">
+        <LikeButton id={props.id} />
+      </span>
+      <MenueButton
+        id={props.id}
+        credit={props.song.artist}
+        image={props.image}
+        lyric={props.song.lyric}
+        title={props.song.title}
+      />
     </div>
   );
 }

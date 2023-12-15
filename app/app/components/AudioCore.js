@@ -15,6 +15,7 @@ export const AudioCore = () => {
     (state) => state.lastChange
   );
 
+  const CurTime = useLampStore((state) => state.currentTime);
   const setCurTime = useLampStore((state) => state.updateTime);
   const setDuration = useLampStore((state) => state.setDuration);
   const togglePlay = useLampStore((state) => state.togglePlay);
@@ -37,9 +38,9 @@ export const AudioCore = () => {
       audio.current.ontimeupdate = () =>
         setCurTime(audio.current.currentTime);
       audio.current.onended = () => {
-        QueueToNext();
-
-        audio.current.pause();
+        if (QueueToNext()) {
+          audio.current.play();
+        } else audio.current.pause();
       };
       audio.current.onloadedmetadata = () =>
         setDuration(audio.current.duration);
@@ -59,22 +60,22 @@ export const AudioCore = () => {
 
   useEffect(() => {
     if (isFinite(volume)) {
-      if (mute) {
-        audio.current.volume = 0;
-      } else audio.current.volume = volume;
+      if (mute) audio.current.volume = 0;
+      else audio.current.volume = volume;
     }
   }, [volume, mute, audio]);
 
   useEffect(() => {
-    if (isFinite(lastChange)) {
-      audio.current.currentTime = lastChange;
-    }
+    if (CurTime === 0) audio.current.currentTime = 0;
+  }, [CurTime]);
+
+  useEffect(() => {
+    if (isFinite(lastChange)) audio.current.currentTime = lastChange;
   }, [lastChange, audio]);
 
   useEffect(() => {
-    if (!play) {
-      audio.current.pause();
-    } else if (play) audio.current.play();
+    if (!play) audio.current.pause();
+    else if (play) audio.current.play();
   }, [play, audio]);
   return null;
 };

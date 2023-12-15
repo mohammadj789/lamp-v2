@@ -44,43 +44,62 @@ const store = (set, get) => ({
 
     // set({ queue: queue });
   },
-  AddToQueue: (track) => set({ queue: [...get().queue, track] }),
+  AddToQueue: (track) => {
+    console.log([...get().queue, track]);
+
+    set({ queue: [...get().queue, track] });
+  },
   QueueToNext: () => {
     const queue = get().queue;
-    const last = queue?.[0];
+    const track = queue?.[0];
     if (queue.length > 0) {
       set({
         queue: [...queue.slice(1)],
+        currentTime: 0,
         track: {
-          title: last.title,
-          image: DOMAIN + last.image,
-          credit: last.artist.artist_name,
-          id: last._id,
-          lyric: last.lyric,
+          title: track.title,
+          image: track.image,
+          credit: track?.artist
+            ? track.artist.artist_name
+            : track.credit,
+          id: track._id || track.id,
+          lyric: track.lyric,
         },
       });
+      return true;
     } else {
       set({
         play: false,
         queue: [],
         currentTime: 0,
-        // track: {
-        //   title: null,
-        //   image: null,
-        //   credit: null,
-        //   id: null,
-        //   lyric: null,
-        //   collection: null,
-        // },
       });
+      return false;
     }
   },
+  chageCurrentQueue: (index) => {
+    const queue = [...get().queue];
+    const track = queue[index];
+    queue.splice(index, 1);
 
+    set({
+      currentTime: 0,
+      queue: queue,
+      track: {
+        title: track.title,
+        image: track.image,
+        credit: track?.artist
+          ? track.artist.artist_name
+          : track.credit,
+        id: track._id || track.id,
+        lyric: track.lyric,
+      },
+    });
+  },
   setTrack: (track) =>
     set({
       track: {
         title: track.title,
-        image: DOMAIN + track.image,
+        image: track.image,
         credit: track.credit,
         id: track.id,
         lyric: track.lyric,
