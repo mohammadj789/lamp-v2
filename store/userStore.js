@@ -19,6 +19,8 @@ const init = {
     collections: null,
     img: null,
     role: null,
+    following: null,
+    followers: null,
   },
 };
 const store = (set, get) => ({
@@ -28,6 +30,9 @@ const store = (set, get) => ({
       token: token,
       isAuth: true,
       user: {
+        id: user._id,
+        following: user.followings,
+        followers: user.followers,
         username: user.username,
         name: user.name,
         favorite_songs: user.favorit_songs,
@@ -36,6 +41,22 @@ const store = (set, get) => ({
         collections: user.Collections,
         img: user.image,
         role: user.role,
+      },
+    });
+  },
+  toogleFollowings: (id) => {
+    console.log(...get().user.following, id, "sdsdsd");
+
+    const followings = [...get().user.following];
+    const index = followings.indexOf(id);
+    if (index > -1) followings.splice(index, 1);
+    else followings.push(id);
+    console.log(followings);
+
+    set({
+      user: {
+        ...get().user,
+        following: followings,
       },
     });
   },

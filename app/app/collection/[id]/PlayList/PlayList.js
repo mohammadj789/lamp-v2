@@ -12,6 +12,7 @@ export default function PlayList(props) {
         title: "Favorites",
         owner: { owner_name: "me" },
         type: "playlist",
+        _id: "favorite",
       }
     : props.data.collection;
 
@@ -20,6 +21,7 @@ export default function PlayList(props) {
   return (
     <div className="overflow-auto h-full sm:pb-16">
       <InfoHeader
+        id={data?._id}
         type={data?.type}
         status={"public"}
         image={props.favorite ? "/girl.jpg" : DOMAIN + data.image}

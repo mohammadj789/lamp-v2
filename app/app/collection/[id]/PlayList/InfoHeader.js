@@ -1,9 +1,18 @@
 import React from "react";
+import LikeCollection from "./LikeCollection";
+import FollowButton from "./FollowButton";
 
 export function InfoHeader(props) {
+  console.log(props);
+
   let bottomContent;
   if (props.type === "artist")
-    bottomContent = <p>{props.listener} monthly listeners</p>;
+    bottomContent = (
+      <div className="flex justify-between w-full pb-2">
+        <p>{props.listener} monthly listeners</p>
+        <FollowButton userId={props.id} type={"artist"} />
+      </div>
+    );
   else if (props.type === "playlist")
     bottomContent = (
       <div className="flex items-center gap-3 flex-wrap">
@@ -19,6 +28,7 @@ export function InfoHeader(props) {
         <span className="shrink-0">
           {props.time.hour}hr {props.time.minutes}min
         </span>
+        <LikeCollection collection={props.id} />
       </div>
     );
   else if (props.type === "user")
@@ -31,9 +41,14 @@ export function InfoHeader(props) {
         <span className="shrink-0">
           {props.user.followings} following
         </span>
+        <FollowButton userId={props.id} />
       </div>
     );
-
+  else if (
+    props.type.toLowerCase() === "single" ||
+    props.type.toLowerCase() === "album"
+  )
+    bottomContent = <LikeCollection collection={props.id} />;
   return (
     <div
       className={`w-full mb-4 pt-14 px-3 ${

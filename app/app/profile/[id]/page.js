@@ -22,6 +22,7 @@ const Profile = async ({ params }) => {
   return (
     <div className="h-full overflow-auto sm:pb-16">
       <InfoHeader
+        id={data.profile._id}
         type={data.profile?.role.toLowerCase()}
         image={DOMAIN + data.profile?.image}
         status={data.profile?.role === "ARTIST" ? "Verified" : ""}
