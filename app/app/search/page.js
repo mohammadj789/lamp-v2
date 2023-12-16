@@ -24,7 +24,6 @@ const Page = () => {
       mutate();
     }
   };
-  console.log(data, isPending);
 
   return (
     <main className="w-full text-white px-3 flex flex-col gap-3 pt-16">

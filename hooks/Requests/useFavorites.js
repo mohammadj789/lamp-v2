@@ -13,7 +13,6 @@ export const useFavorites = () => {
         Authorization: "Bearer " + TOKEN,
       }),
   });
-  console.log(data, isLoading);
 
   return { data, isLoading };
 };

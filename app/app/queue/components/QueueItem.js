@@ -14,11 +14,7 @@ export default function QueueItem(props) {
   const isPlaying = false;
   return (
     <div
-      onClick={() => {
-        console.log(props.index);
-
-        chageCurrentQueue(props.index);
-      }}
+      onClick={() => chageCurrentQueue(props.index)}
       className="h-14 rounded-md px-3 cursor-pointer
           grid grid-cols-[auto_1fr_1fr_.2fr_auto] md:grid-cols-[auto_1fr_1fr_.2fr_auto] sm:grid-cols-[auto_1fr_auto] gap-3 items-center hover:bg-white/20 transition-all group"
     >
@@ -55,6 +51,7 @@ export default function QueueItem(props) {
         image={props.image}
         lyric={props.song.lyric}
         title={props.song.title}
+        queue
       />
     </div>
   );

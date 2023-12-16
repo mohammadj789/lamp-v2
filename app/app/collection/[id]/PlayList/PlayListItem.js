@@ -95,6 +95,7 @@ export default function PlayListItem(props) {
         image={props.image}
         lyric={props.song.lyric}
         title={props.song.title}
+        collection={props.collection_id}
       />
     </div>
   );

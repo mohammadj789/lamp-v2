@@ -9,15 +9,13 @@ const Page = () => {
   const queue = useLampStore((state) => state.queue);
   const track = useLampStore((state) => state.track);
 
-  console.log(queue);
-
   return (
     <main className="w-full text-white px-3 flex flex-col gap-3 pt-16">
       {track.id && (
         <div>
           <h3>Now Playing</h3>
 
-          <PlayListItem
+          <QueueItem
             id={track.id}
             image={track.image}
             isPlaying

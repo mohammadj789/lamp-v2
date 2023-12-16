@@ -45,8 +45,6 @@ const store = (set, get) => ({
     // set({ queue: queue });
   },
   AddToQueue: (track) => {
-    console.log([...get().queue, track]);
-
     set({ queue: [...get().queue, track] });
   },
   QueueToNext: () => {

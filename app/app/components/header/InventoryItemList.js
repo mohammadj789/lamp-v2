@@ -130,13 +130,6 @@ const InventoryItemList = ({ hide }) => {
     },
   });
 
-  const playlists = CollectionData
-    ? [
-        ...CollectionData.collectioans.wished,
-        ...CollectionData.collectioans.me,
-      ]
-    : [];
-
   return (
     <div className="h-2/3 pt-3 overflow-y-scroll overflow-x-hidden">
       <NewCollectionButton />
@@ -147,7 +140,7 @@ const InventoryItemList = ({ hide }) => {
         type={"favorite"}
         hide={hide}
       />
-      {playlists.map((item) => (
+      {CollectionData?.collectioans.wished.map((item) => (
         <InventoryItem
           hide={hide}
           key={item._id}
@@ -156,7 +149,19 @@ const InventoryItemList = ({ hide }) => {
           title={item.title}
           type={item.type}
           id={item._id}
-          credit="travis scott"
+          credit={item.owner.owner_name}
+        />
+      ))}
+      {CollectionData?.collectioans.me.map((item) => (
+        <InventoryItem
+          hide={hide}
+          key={item._id}
+          // isPlaying
+          image={item.image ? DOMAIN + item.image : "/hill.jpg"}
+          title={item.title}
+          type={item.type}
+          id={item._id}
+          credit="me"
         />
       ))}
       {ARtistData?.artist?.map((item) => (
