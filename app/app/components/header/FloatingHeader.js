@@ -2,11 +2,13 @@
 import useUserStore from "@/store/userStore";
 import { BackSVG, ForwardSVG } from "@/svg/Play";
 import { DOMAIN } from "@/utils/constant";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export function FloatingHeader(props) {
   const router = useRouter();
   const img = useUserStore((state) => state.user.img);
+  const id = useUserStore((state) => state.user.id);
   return (
     <div className="w-full bg-transparent absolute flex justify-between px-5 py-2 z-20">
       <div className="flex items-center gap-2">
@@ -23,13 +25,13 @@ export function FloatingHeader(props) {
           <ForwardSVG />
         </button>
       </div>
-      <button className="h-fit">
+      <Link href={"/app/profile/" + id} className="h-fit">
         <img
           src={DOMAIN + img}
           className="w-10 h-10 object-cover rounded-full border-[6px] border-zinc-800 border-opacity-80"
           alt="profile"
         />
-      </button>
+      </Link>
     </div>
   );
 }

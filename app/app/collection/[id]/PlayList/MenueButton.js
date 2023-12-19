@@ -1,5 +1,5 @@
 "use client";
-import { MenuSVG } from "@/svg/Play";
+import { MenuSVG, OptionSVG } from "@/svg/Play";
 import useLampStore from "@/store/store";
 import React, { useState } from "react";
 import ClickAwayListener from "react-click-away-listener";
@@ -171,7 +171,7 @@ export function MenueButton({
         }}
         className=""
       >
-        <MenuSVG />
+        <OptionSVG />
       </button>
       {open && (
         <ClickAwayListener onClickAway={() => setopen(false)}>

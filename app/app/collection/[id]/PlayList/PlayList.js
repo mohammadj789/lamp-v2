@@ -11,7 +11,7 @@ export default function PlayList(props) {
         tracks: props.data.favorits,
         title: "Favorites",
         owner: { owner_name: "me" },
-        type: "playlist",
+        type: "favorite",
         _id: "favorite",
       }
     : props.data.collection;
@@ -30,6 +30,7 @@ export default function PlayList(props) {
           img: "/girl.jpg",
           name: data?.owner?.owner_name,
           link: "/app",
+          owner_Id: data?.owner.owner_id,
         }}
         time={{ hour: 30, minutes: 22 }}
         count={data?.tracks?.length}

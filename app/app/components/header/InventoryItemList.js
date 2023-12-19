@@ -12,7 +12,7 @@ import useUserStore from "@/store/userStore";
 import { PlusSVG } from "@/svg/Play";
 import Modal from "react-modal";
 
-function NewCollectionButton() {
+function NewCollectionButton({ hide }) {
   const user_role = useUserStore((state) => state.user.role);
   const [modal, setModal] = useState(false);
   const queryClient = useQueryClient();
@@ -23,7 +23,7 @@ function NewCollectionButton() {
       DOMAIN +
         "/collection/create/" +
         (selectRef?.current
-          ? selectRef.current.selectedOptions["0"].text
+          ? selectRef.current.selectedOptions["0"].text.toLowerCase()
           : "playlist"),
       { title: nameRef.current.value },
       { headers: { Authorization: "Bearer " + TOKEN } }
@@ -47,7 +47,9 @@ function NewCollectionButton() {
       <h2 className="lg:hidden">Your Library</h2>
       <button
         onClick={() => setModal(true)}
-        className="lg:justify-center grid place-content-center lg:w-full lg:aspect-square lg:bg-slate-700 lg:rounded-lg"
+        className={`lg:justify-center grid place-content-center lg:w-full sm:py-4 sm:aspect-auto ${
+          hide ? "py-2" : "lg:aspect-square"
+        } lg:bg-slate-700 lg:rounded-lg`}
       >
         <PlusSVG width={16} height={16} />
       </button>
@@ -132,7 +134,7 @@ const InventoryItemList = ({ hide }) => {
 
   return (
     <div className="h-2/3 pt-3 overflow-y-scroll overflow-x-hidden">
-      <NewCollectionButton />
+      {<NewCollectionButton hide={hide} />}
       <InventoryItem
         image={"/hill.jpg"}
         title="Likes"

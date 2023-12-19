@@ -6,7 +6,10 @@ import { Transition } from "react-transition-group";
 import useUiStore from "@/store/uiStore";
 import useLampStore from "@/store/store";
 import { useStore } from "@/store/useStore";
-import { DownSVG, HeartSVG, OptionSVG } from "@/svg/Play";
+import { DownSVG, HeartSVG, MenuSVG, OptionSVG } from "@/svg/Play";
+import { LikeButton } from "./LikeButton";
+import Link from "next/link";
+import { MenueButton } from "../../collection/[id]/PlayList/MenueButton";
 function MobileFullPlayer(props) {
   const fullPlayer = useUiStore((state) => state.fullPlayer);
   const toggleFullPlayer = useUiStore(
@@ -34,7 +37,7 @@ function MobileFullPlayer(props) {
     >
       {(state) => (
         <div
-          className={`fixed hidden sm:flex gap-6 flex-col z-50 bg-slate-700 w-full h-full translate-y-[100%] transition-all text-white  p-3 overflow-hidden ${
+          className={`fixed hidden sm:flex gap-6 flex-col z-20 bg-slate-700 w-full h-full translate-y-[100%] transition-all text-white  p-3 overflow-hidden ${
             state === "entered" || state === "entering"
               ? "!translate-y-[0]"
               : ""
@@ -50,9 +53,14 @@ function MobileFullPlayer(props) {
             <p className="w-full text-center text-[.7rem] font-medium">
               {detail.credit}
             </p>
-            <button className="flex justify-center items-center min-w-[48px]">
-              <OptionSVG />
-            </button>
+            <MenueButton
+              id={detail?.id}
+              credit={detail.credit}
+              image={detail?.image}
+              lyric={detail?.lyric}
+              title={detail?.title}
+              collection={detail?.collection}
+            />
           </div>
           <div className="h-full w-full flex items-center justify-center">
             <img
@@ -71,9 +79,16 @@ function MobileFullPlayer(props) {
                   {detail.credit}
                 </p>
               </div>
-              <button className="flex justify-center items-center min-w-[48px] text-gray-300">
-                <HeartSVG />
-              </button>
+              <div className="flex items-center">
+                <LikeButton id={detail?.id} />
+                <Link
+                  onClick={toggleFullPlayer}
+                  href={"/app/queue"}
+                  className={`text-gray-400 rounded-full flex items-center h-8 w-8 p-1 hover:text-white`}
+                >
+                  <MenuSVG />
+                </Link>
+              </div>
             </div>
             <div className="flex flex-col px-2">
               <ProgressBar
