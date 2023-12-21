@@ -154,18 +154,20 @@ const InventoryItemList = ({ hide }) => {
           credit={item.owner.owner_name}
         />
       ))}
-      {CollectionData?.collectioans.me.map((item) => (
-        <InventoryItem
-          hide={hide}
-          key={item._id}
-          // isPlaying
-          image={item.image ? DOMAIN + item.image : "/hill.jpg"}
-          title={item.title}
-          type={item.type}
-          id={item._id}
-          credit="me"
-        />
-      ))}
+      {CollectionData?.collectioans.me
+        .filter((item) => item.type === "playlist")
+        .map((item) => (
+          <InventoryItem
+            hide={hide}
+            key={item._id}
+            // isPlaying
+            image={item.image ? DOMAIN + item.image : "/hill.jpg"}
+            title={item.title}
+            type={item.type}
+            id={item._id}
+            credit="me"
+          />
+        ))}
       {ARtistData?.artist?.map((item) => (
         <InventoryItem
           hide

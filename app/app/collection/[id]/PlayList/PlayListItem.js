@@ -11,8 +11,7 @@ export default function PlayListItem(props) {
   const Collection_id = useLampStore(
     (state) => state.track.collection
   );
-  const queue = useLampStore((state) => state.queue);
-  const setQueue = useLampStore((state) => state.setQueue);
+
   const setTrack = useLampStore((state) => state.setTrack);
   const setPause = useLampStore((state) => state.togglePause);
   const play = useLampStore((state) => state.play);

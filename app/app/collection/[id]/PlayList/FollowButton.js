@@ -12,7 +12,7 @@ const FollowButton = ({ userId, type }) => {
   const queryClient = useQueryClient();
   const TOKEN = useUserStore((state) => state.token);
   const user_id = useUserStore((state) => state.user.id);
-
+  const router = useRouter();
   const followings = useUserStore((state) => state.user.following);
   const toogleFollowings = useUserStore(
     (state) => state.toogleFollowings
@@ -35,6 +35,7 @@ const FollowButton = ({ userId, type }) => {
     mutationKey: ["follow user"],
     mutationFn: followHandller,
     onSuccess: () => {
+      router.refresh();
       toogleFollowings(userId);
       type === "artist" &&
         queryClient.invalidateQueries({

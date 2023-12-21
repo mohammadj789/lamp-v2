@@ -44,6 +44,15 @@ const store = (set, get) => ({
       },
     });
   },
+  updateProfile: (image) => {
+    set({
+      user: {
+        ...get().user,
+        img: image,
+      },
+    });
+  },
+
   toogleFollowings: (id) => {
     console.log(...get().user.following, id, "sdsdsd");
 

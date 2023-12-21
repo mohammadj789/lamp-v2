@@ -8,11 +8,12 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 
-const ChangeImage = ({ collection, ownerId }) => {
+const ChangeImage = ({ collection, ownerId, profile }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const TOKEN = useUserStore((state) => state.token);
   const userId = useUserStore((state) => state.user.id);
+  const updateProfile = useUserStore((state) => state.updateProfile);
 
   const ThumbnailCollection = async () => {
     const file = imageRef.current.files[0];
@@ -21,8 +22,10 @@ const ChangeImage = ({ collection, ownerId }) => {
       formData.append("image", file);
     }
 
-    const response = await axios.post(
-      DOMAIN + "/collection/updateTumbnail/" + collection,
+    const response = await axios.patch(
+      profile
+        ? DOMAIN + "/user/profile/image"
+        : DOMAIN + "/collection/updateTumbnail/" + collection,
       formData,
       {
         headers: {
@@ -37,13 +40,18 @@ const ChangeImage = ({ collection, ownerId }) => {
   const { mutate } = useMutation({
     mutationKey: ["update Thumbnail collection"],
     mutationFn: ThumbnailCollection,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["collections"] });
+    onSuccess: (data) => {
+      if (profile) updateProfile(data.profile);
+      else
+        queryClient.invalidateQueries({ queryKey: ["collections"] });
+
       router.refresh();
     },
   });
   const [modal, setModal] = useState(false);
   const imageRef = useRef();
+  console.log(userId, ownerId);
+
   if (userId === ownerId) {
     return (
       <>

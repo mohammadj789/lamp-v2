@@ -25,7 +25,7 @@ export const InventoryItem = (props) => {
         props?.type?.toLowerCase() === "favorite"
           ? "/app/favorites"
           : props?.type?.toLowerCase() === "artist"
-          ? `/app/profile/${props.id}`
+          ? `/app/artist/${props.id}`
           : `/app/collection/${props.id}`
       }
     >

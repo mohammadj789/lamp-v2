@@ -2,8 +2,10 @@ import React from "react";
 import LikeCollection from "./LikeCollection";
 import FollowButton from "./FollowButton";
 import DeleteCollection from "./DeleteCollection";
-import { PenSVG } from "@/svg/Play";
+
 import ChangeImage from "./ChangeImage";
+import Link from "next/link";
+import ArtistLink from "./ArtistLink";
 
 export function InfoHeader(props) {
   let bottomContent;
@@ -52,11 +54,14 @@ export function InfoHeader(props) {
         <span className="flex items-center shrink-0 gap-2">
           {props.user.playlistCount} Public Playlists
         </span>
-        <p className="shrink-0">{props.user.followers} followers</p>
-        <span className="shrink-0">
+        <Link href={`${props.id}/followers/`} className="shrink-0">
+          {props.user.followers} followers
+        </Link>
+        <Link href={`${props.id}/followings/`} className="shrink-0">
           {props.user.followings} following
-        </span>
+        </Link>
         <FollowButton userId={props.id} />
+        <ArtistLink userId={props.id} />
       </div>
     );
   else if (
@@ -66,11 +71,14 @@ export function InfoHeader(props) {
     bottomContent = <LikeCollection collection={props.id} />;
   return (
     <div
+      style={{
+        background:
+          props.theme &&
+          `linear-gradient(0deg, rgba(0,0,0,1) 0%, ${props.theme} 65%)`,
+      }}
       className={`w-full mb-4 pt-14 px-3 ${
         props.type === "user" ? "h-auto" : "h-96"
-      } bg-gradient-to-b ${
-        props.theme ? `from-[#fff]` : "from-emerald-900"
-      } to-black justify-end flex gap-5 sm:flex-col relative `}
+      } bg-gradient-to-b from-emerald-900 to-black justify-end flex gap-5 sm:flex-col relative `}
     >
       {/* ${props.theme} */}
       {props.span ? (
@@ -91,9 +99,11 @@ export function InfoHeader(props) {
               alt="playlist thumb nail"
               src={props.image}
             />
+
             <ChangeImage
+              profile={props.type === "user"}
               collection={props.id}
-              ownerId={props.credit.owner_Id}
+              ownerId={props?.credit?.owner_Id || props.id}
             />
           </div>
         </div>

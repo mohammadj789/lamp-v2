@@ -7,7 +7,7 @@ import React, { useRef } from "react";
 import PlayListItem from "../collection/[id]/PlayList/PlayListItem";
 import useLampStore from "@/store/store";
 import { InventoryItem } from "../components/header/InventoryItem";
-import Card from "../profile/[id]/profile/Card";
+import Card from "../user/[id]/profile/Card";
 
 const Page = () => {
   const search = useRef();
@@ -75,7 +75,7 @@ const Page = () => {
         <div className="grid grid-cols-6 sm:grid-cols-2">
           {data?.users.map((item) => (
             <Card
-              type={"profile"}
+              type={item.role.toLowerCase()}
               withoutBtn
               key={item._id}
               item={{

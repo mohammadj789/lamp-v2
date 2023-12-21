@@ -25,7 +25,7 @@ export function FloatingHeader(props) {
           <ForwardSVG />
         </button>
       </div>
-      <Link href={"/app/profile/" + id} className="h-fit">
+      <Link href={"/app/user/" + id} className="h-fit">
         <img
           src={DOMAIN + img}
           className="w-10 h-10 object-cover rounded-full border-[6px] border-zinc-800 border-opacity-80"
