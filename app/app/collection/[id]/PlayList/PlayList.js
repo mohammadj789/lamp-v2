@@ -17,6 +17,9 @@ export default function PlayList(props) {
     : props.data.collection;
 
   if (!data) return notFound();
+  const time = data.tracks.reduce((prev, cur, i) => {
+    return prev + cur.duration;
+  }, 0);
 
   return (
     <div className="overflow-auto h-full sm:pb-16">
@@ -32,7 +35,10 @@ export default function PlayList(props) {
           link: "/app",
           owner_Id: data?.owner.owner_id,
         }}
-        time={{ hour: 30, minutes: 22 }}
+        time={{
+          hour: Math.floor(time / 3600),
+          minutes: Math.floor((time % 3600) / 60),
+        }}
         count={data?.tracks?.length}
         listener={100000}
         theme={data.theme_color}

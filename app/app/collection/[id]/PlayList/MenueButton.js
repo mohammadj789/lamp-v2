@@ -88,16 +88,18 @@ function AddToCollectionButton({ id }) {
           <button onClick={() => setModal(false)}>Close</button>
         </div>
         <div className="min-w-[400px] md:min-w-[80vw] max-h-[70vh] overflow-auto">
-          {me?.map((item) => (
-            <CollectionItem
-              key={item._id}
-              image={item.image ? DOMAIN + item.image : "/girl.jpg"}
-              title={item.title}
-              onClick={() =>
-                mutate({ playlist: item._id, track: id })
-              }
-            />
-          ))}
+          {me
+            .filter((item) => item.type === "playlist")
+            ?.map((item) => (
+              <CollectionItem
+                key={item._id}
+                image={item.image ? DOMAIN + item.image : "/girl.jpg"}
+                title={item.title}
+                onClick={() =>
+                  mutate({ playlist: item._id, track: id })
+                }
+              />
+            ))}
         </div>
       </Modal>
     </>

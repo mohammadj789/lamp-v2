@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
+import ReactSlider from "react-slider";
 
 function FeatureArtist({
   TOKEN,
@@ -134,6 +135,7 @@ const ArtistSection = ({ userId }) => {
     },
   });
 
+  const [progress, setProgress] = useState(0);
   const uploadTrack = async () => {
     const formData = new FormData();
 
@@ -155,15 +157,24 @@ const ArtistSection = ({ userId }) => {
       {
         headers: { Authorization: "Bearer " + TOKEN },
         "Content-Type": "multipart/form-data",
+        onUploadProgress: (progressEvent) => {
+          setProgress(
+            Math.round(
+              (progressEvent.loaded / progressEvent.total) * 100
+            )
+          );
+        },
       }
     );
     return response.data;
   };
 
-  const { mutate, error } = useMutation({
+  const { mutate, error, isPending } = useMutation({
     mutationKey: ["upload track"],
     mutationFn: uploadTrack,
+    onError: () => setProgress(0),
     onSuccess: () => {
+      setProgress(0);
       setModal({ state: null, open: false });
       router.refresh();
     },
@@ -235,6 +246,32 @@ const ArtistSection = ({ userId }) => {
                 setSelectedFeature={setSelectedFeature}
                 TOKEN={TOKEN}
               />
+              {error && (
+                <span className="text-center text-red-500 text-xs mb-2">
+                  {error?.response.data.errors.message}
+                </span>
+              )}
+              {progress !== 0 && isPending && (
+                <div>
+                  <div className="w-full flex items-center justify-between mb-1">
+                    <span className="text-white text-xs">
+                      uploading ...
+                    </span>
+                    <span className="text-white text-xs">
+                      {progress}%
+                    </span>
+                  </div>
+
+                  <ReactSlider
+                    className={`w-full h-1 rounded-3xl mb-2`}
+                    trackClassName="bg-white bg-opacity-25  first:bg-white h-full rounded-3xl "
+                    max={100}
+                    min={0}
+                    disabled
+                    value={progress}
+                  />
+                </div>
+              )}
               <div className="flex items-center justify-end gap-2 text-white   rounded-md">
                 <button
                   type="button"
