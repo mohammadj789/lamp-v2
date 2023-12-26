@@ -10,13 +10,14 @@ import {
 } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 
-const LikeCollection = ({ collection }) => {
+const LikeCollection = ({ collection, likes, ownerId }) => {
+  const [isliked, setIsliked] = useState(likes);
   const router = useRouter();
   const queryClient = useQueryClient();
   const TOKEN = useUserStore((state) => state.token);
-
+  const userId = useUserStore((state) => state.user.id);
   const { data } = useQuery({
     queryKey: ["collections"],
     queryFn: () =>
@@ -42,16 +43,30 @@ const LikeCollection = ({ collection }) => {
   const { mutate } = useMutation({
     mutationKey: ["like collection"],
     mutationFn: LikeCollection,
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["collections"] });
+
+      data.message.includes("added")
+        ? setIsliked((prev) => prev + 1)
+        : setIsliked((prev) => prev - 1);
     },
   });
+  console.log(isliked);
 
-  return (
-    <button onClick={() => mutate({ playlist: collection })}>
-      {isFave ? <FillHeartSVG /> : <HeartSVG />}
-    </button>
-  );
+  if (userId !== ownerId)
+    return (
+      <>
+        {" "}
+        <span className="shrink-0">{isliked} likes</span>
+        <button
+          onClick={() => {
+            mutate({ playlist: collection });
+          }}
+        >
+          {isFave ? <FillHeartSVG /> : <HeartSVG />}
+        </button>
+      </>
+    );
 };
 
 export default LikeCollection;

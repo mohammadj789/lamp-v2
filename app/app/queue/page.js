@@ -10,7 +10,7 @@ const Page = () => {
   const track = useLampStore((state) => state.track);
 
   return (
-    <main className="w-full text-white px-3 flex flex-col gap-3 pt-16">
+    <main className="w-full text-white px-3 flex flex-col gap-3 pt-16 sm:pb-14">
       {track.id && (
         <div>
           <h3>Now Playing</h3>

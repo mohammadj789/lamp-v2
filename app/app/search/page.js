@@ -26,7 +26,7 @@ const Page = () => {
   };
 
   return (
-    <main className="w-full text-white px-3 flex flex-col gap-3 pt-16">
+    <main className="w-full text-white px-3 flex flex-col gap-3 pt-16 sm:pb-14">
       <form onSubmit={submitHandller} className="relative">
         <span className="absolute top-1/2 -translate-y-1/2 mb-2 left-2">
           <MenuSVG fill={"#333"} />

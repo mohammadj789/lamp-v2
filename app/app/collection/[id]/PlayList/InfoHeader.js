@@ -41,7 +41,12 @@ export function InfoHeader(props) {
         <span className="shrink-0">
           {props.time.hour}hr {props.time.minutes}min
         </span>
-        <LikeCollection collection={props.id} />
+
+        <LikeCollection
+          ownerId={props.credit.owner_Id}
+          likes={props.likes}
+          collection={props.id}
+        />
         <DeleteCollection
           collection={props.id}
           ownerId={props.credit.owner_Id}
@@ -68,7 +73,26 @@ export function InfoHeader(props) {
     props.type.toLowerCase() === "single" ||
     props.type.toLowerCase() === "album"
   )
-    bottomContent = <LikeCollection collection={props.id} />;
+    bottomContent = (
+      <div className="flex items-center gap-3 flex-wrap">
+        <span className="flex items-center shrink-0 gap-2 ">
+          <img
+            className="h-8 w-8 rounded-full"
+            alt="maker profile"
+            src={props.credit.img}
+          />
+
+          <a href="/#">{props.credit.name}</a>
+        </span>
+
+        <LikeCollection
+          ownerId={props.credit.owner_Id}
+          likes={props.likes}
+          collection={props.id}
+        />
+      </div>
+    );
+
   return (
     <div
       style={{

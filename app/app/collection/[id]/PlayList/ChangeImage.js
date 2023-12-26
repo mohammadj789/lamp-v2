@@ -46,11 +46,11 @@ const ChangeImage = ({ collection, ownerId, profile }) => {
         queryClient.invalidateQueries({ queryKey: ["collections"] });
 
       router.refresh();
+      setModal(false);
     },
   });
   const [modal, setModal] = useState(false);
   const imageRef = useRef();
-  console.log(userId, ownerId);
 
   if (userId === ownerId) {
     return (

@@ -28,6 +28,7 @@ export default function PlayList(props) {
         type={data?.type}
         status={"public"}
         image={props.favorite ? "/girl.jpg" : DOMAIN + data.image}
+        likes={data.likes}
         title={data?.title}
         credit={{
           img: "/girl.jpg",

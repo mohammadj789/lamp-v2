@@ -3,7 +3,7 @@ import InventoryItemList from "../components/header/InventoryItemList";
 
 const page = () => {
   return (
-    <main className="w-full text-white px-3 flex flex-col gap-3 pt-16">
+    <main className="w-full text-white px-3 flex flex-col gap-3 pt-16 sm:pb-14">
       {" "}
       <InventoryItemList hide />
     </main>

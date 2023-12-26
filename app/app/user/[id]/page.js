@@ -19,7 +19,7 @@ const Profile = async ({ params }) => {
   );
 
   return (
-    <div className="h-full overflow-auto sm:pb-16">
+    <div className="h-full overflow-auto sm:pb-16 ">
       <InfoHeader
         id={data.profile._id}
         type={"user"}

@@ -1,9 +1,14 @@
 "use client";
 import useLampStore from "@/store/store";
 import { useStore } from "@/store/useStore";
+import useUserStore from "@/store/userStore";
 import { DOMAIN } from "@/utils/constant";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { useEffect, useMemo, useRef } from "react";
 export const AudioCore = () => {
+  const TOKEN = useUserStore((state) => state.token);
+
   const track_id = useStore(useLampStore, (state) => state.track.id);
   const track_collection = useStore(
     useLampStore,
@@ -27,14 +32,26 @@ export const AudioCore = () => {
   const audio = useRef(
     typeof window !== "undefined" ? new Audio() : null
   );
-
-  useEffect(() => {
-    try {
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["get track"],
+    mutationFn: async () =>
+      !isPending &&
+      TOKEN &&
+      track_id &&
+      (await axios.get(DOMAIN + "/track/update-stats/" + track_id, {
+        headers: { Authorization: "bearer " + TOKEN },
+      })),
+    onSuccess: () => {
       audio.current.src = DOMAIN + "/track/stream/" + track_id;
       audio.current.load();
       audio.current.play().catch((e) => e);
       togglePlay();
       audio.current.currentTime = 0;
+    },
+  });
+  useEffect(() => {
+    try {
+      mutate();
       audio.current.ontimeupdate = () =>
         setCurTime(audio.current.currentTime);
       audio.current.onended = () => {
