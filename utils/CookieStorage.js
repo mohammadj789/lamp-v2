@@ -5,7 +5,7 @@ export const storage = {
     return Cookies.get(name) || null;
   },
   setItem: async (name, value) => {
-    Cookies.set(name, value);
+    Cookies.set(name, value, { expires: 7 });
   },
   removeItem: async (name) => {
     Cookies.remove(name);

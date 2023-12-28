@@ -11,11 +11,13 @@ export const metadata = {
 };
 import React from "react";
 import ReactQueryProvider from "@/utils/ReactQueryProvider";
+import NotestickProvider from "@/utils/NotestickProvider";
 
 const layout = ({ children }) => {
   return (
     <html lang="en">
       <body className={`bg-black ${inter.className}`}>
+        <NotestickProvider />
         <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>

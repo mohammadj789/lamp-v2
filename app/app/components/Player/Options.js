@@ -16,6 +16,7 @@ import Link from "next/link";
 export function Optioans(props) {
   const volume = useStore(useLampStore, (state) => state.volume);
   const lyric = useStore(useLampStore, (state) => state.track.lyric);
+  const track = useLampStore((state) => state.track.id);
   const mute = useStore(useLampStore, (state) => state.mute);
   const toggleMute = useLampStore((state) => state.toggleMute);
   const changeVolume = useLampStore((state) => state.changeVolume);
@@ -34,9 +35,16 @@ export function Optioans(props) {
       >
         <MenuSVG />
       </Link>
-      {lyric && (
+      {lyric ? (
         <Link
           href={"/app/lyric/" + lyric}
+          className={`text-gray-400 rounded-full flex items-center h-8 w-8 p-1 hover:text-white`}
+        >
+          <MicSVG />
+        </Link>
+      ) : (
+        <Link
+          href={"/app/lyric/new/" + track}
           className={`text-gray-400 rounded-full flex items-center h-8 w-8 p-1 hover:text-white`}
         >
           <MicSVG />
