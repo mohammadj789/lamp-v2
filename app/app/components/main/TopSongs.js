@@ -5,14 +5,12 @@ import React from "react";
 import { TrackPlay } from "./RecentlyPlayed";
 
 const TopSongs = async () => {
-  console.log("");
-
   const data = await getRequest(DOMAIN + "/track/toptracks");
 
   return (
     <div className="px-3">
       <h3 className="font-bold mb-2">Top played Songs</h3>
-      <div className="grid grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-2">
+      <div className="grid grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 gap-2">
         {data?.tracks?.map((item) => (
           <div
             key={item._id}

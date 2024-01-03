@@ -4,8 +4,11 @@ import useUserStore from "@/store/userStore";
 import { PauseSVG, PlaySVG } from "@/svg/Play";
 import { DOMAIN } from "@/utils/constant";
 import { getRequest } from "@/utils/getRequest";
+
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import { useEffect } from "react";
+import { io } from "socket.io-client";
 
 export function TrackPlay({ item }) {
   const setTrack = useLampStore((state) => state.setTrack);
@@ -43,11 +46,12 @@ const RecentlyPlayed = () => {
         Authorization: "Bearer " + TOKEN,
       }),
   });
+
   if (data?.streams.length > 0)
     return (
       <div className="px-3">
         <h3 className="font-bold mb-2">Recently played</h3>
-        <div className="grid grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-2">
+        <div className="grid grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 gap-2">
           {data?.streams.map(({ TrackId: item }) => (
             <div
               key={item._id}
