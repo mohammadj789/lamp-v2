@@ -6,17 +6,27 @@ import { CardRow } from "./user/[id]/profile/CardRow";
 import { getRequest } from "@/utils/getRequest";
 
 export default async function Home() {
-  const ArtistData = await getRequest(
-    DOMAIN + "/user/artist/popular"
+  const ArtistDataResponse = await fetch(
+    DOMAIN + "/user/artist/popular",
+    { next: { revalidate: 900 } }
   );
-  const CollectionData = await getRequest(
-    DOMAIN + "/collection/topcollection"
+  const ArtistData = await ArtistDataResponse.json();
+
+  const CollectionDataResponse = await fetch(
+    DOMAIN + "/collection/topcollection",
+    { next: { revalidate: 900 } }
   );
+  const CollectionData = await CollectionDataResponse.json();
+  const TopSongDataResponse = await fetch(
+    DOMAIN + "/track/toptracks",
+    { next: { revalidate: 900 } }
+  );
+  const TopSongData = await TopSongDataResponse.json();
   return (
     <main className="w-full text-white px-3 flex flex-col gap-3 pt-16 overflow-auto h-full sm:pb-14">
       <h1 className="text-xl font-bold mb-2">Wellcome</h1>
       <RecentlyPlayed />
-      <TopSongs />
+      <TopSongs data={TopSongData} />
       <CardRow
         type={"collection"}
         title={"Top Collections"}

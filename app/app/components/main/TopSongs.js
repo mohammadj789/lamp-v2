@@ -4,9 +4,7 @@ import { getRequest } from "@/utils/getRequest";
 import React from "react";
 import { TrackPlay } from "./RecentlyPlayed";
 
-const TopSongs = async () => {
-  const data = await getRequest(DOMAIN + "/track/toptracks");
-
+const TopSongs = async ({ data }) => {
   return (
     <div className="px-3">
       <h3 className="font-bold mb-2">Top played Songs</h3>
