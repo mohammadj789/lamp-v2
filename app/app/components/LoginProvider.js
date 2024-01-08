@@ -24,7 +24,10 @@ const LoginProvider = ({ children }) => {
       }),
     onSuccess: (data) => login(token, data.data.user),
   });
-
+  // useEffect(() => {
+  //   if (error?.response?.status === 401);
+  //   logout();
+  // }, [error]);
   useEffect(() => {
     if (token && !isAuth) {
       mutate();

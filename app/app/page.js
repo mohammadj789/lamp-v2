@@ -26,6 +26,7 @@ export default async function Home() {
     <main className="w-full text-white px-3 flex flex-col gap-3 pt-16 overflow-auto h-full sm:pb-14">
       <h1 className="text-xl font-bold mb-2">Wellcome</h1>
       <RecentlyPlayed />
+      <RecentlyPlayed taste />
       <TopSongs data={TopSongData} />
       <CardRow
         type={"collection"}

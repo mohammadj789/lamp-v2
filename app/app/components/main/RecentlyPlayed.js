@@ -37,36 +37,48 @@ export function TrackPlay({ item }) {
   );
 }
 
-const RecentlyPlayed = () => {
+const RecentlyPlayed = ({ taste }) => {
   const TOKEN = useUserStore((state) => state.token);
   const { data } = useQuery({
-    queryKey: ["recently played"],
+    queryKey: [taste ? "taste" : "recently played"],
     queryFn: () =>
-      getRequest(DOMAIN + "/user/played", {
+      getRequest(DOMAIN + (taste ? "/user/taste" : "/user/played"), {
         Authorization: "Bearer " + TOKEN,
       }),
   });
 
-  if (data?.streams.length > 0)
+  const DataTracks = taste ? data?.suggestedTracks : data?.streams;
+  console.log(DataTracks);
+
+  if (DataTracks?.length > 0)
     return (
       <div className="px-3">
-        <h3 className="font-bold mb-2">Recently played</h3>
+        {taste ? (
+          <h3 className="font-bold mb-2">Suggestions</h3>
+        ) : (
+          <h3 className="font-bold mb-2">Recently played</h3>
+        )}
         <div className="grid grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 gap-2">
-          {data?.streams.map(({ TrackId: item }) => (
-            <div
-              key={item._id}
-              className="w-full h-[8vh] bg-zinc-900 p-2 rounded-lg flex items-center gap-2"
-            >
-              <img
-                className="h-full aspect-square rounded-md object-cover"
-                src={DOMAIN + item.image}
-                alt={item.title}
-              />
+          {DataTracks?.map((item) => {
+            const track = taste ? item : item.TrackId;
+            return (
+              <div
+                key={track._id}
+                className="w-full h-[8vh] bg-zinc-900 p-2 rounded-lg flex items-center gap-2"
+              >
+                <img
+                  className="h-full aspect-square rounded-md object-cover"
+                  src={DOMAIN + track?.image}
+                  alt={track?.title}
+                />
 
-              <span className="text-white w-full">{item.title}</span>
-              <TrackPlay item={item} />
-            </div>
-          ))}
+                <span className="text-white w-full">
+                  {track?.title}
+                </span>
+                <TrackPlay item={track} />
+              </div>
+            );
+          })}
         </div>
       </div>
     );
