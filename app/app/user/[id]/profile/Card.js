@@ -10,7 +10,7 @@ const Card = async ({ item, withoutBtn, type }) => {
       href={"/app/" + type + "/" + item._id}
       className="z-0 font-normal flex-shrink-0 h-full  gap-1 rounded-md flex flex-col items-start justify-start hover:bg-white/30 overflow-hidden text-white p-1  group"
     >
-      <div className="aspect-square flex-shrink-0 relative">
+      <div className="aspect-square flex-shrink-0 relative w-full">
         <img
           alt="card thumbnail"
           className="object-cover rounded-md w-full h-full"
