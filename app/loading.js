@@ -1,5 +1,5 @@
 import React from "react";
-import { LoadingDots } from "./app/components/ui/LoadingDots";
+import { LoadingDots } from "./(app)/components/ui/LoadingDots";
 
 const Loading = () => {
   return (

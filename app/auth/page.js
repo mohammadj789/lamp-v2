@@ -5,11 +5,9 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
+import { signIn } from "next-auth/react";
+import Cookies from "js-cookie";
 
-const LoginRequest = async (url, body) => {
-  const response = await axios.post(url, body);
-  return response.data;
-};
 function LoginForm({ setLogin }) {
   const login = useUserStore((state) => state.login);
   const email = useRef();
@@ -17,14 +15,17 @@ function LoginForm({ setLogin }) {
   const router = useRouter();
   const { mutate, data, error } = useMutation({
     mutationKey: ["login"],
-    mutationFn: () =>
-      LoginRequest(DOMAIN + "/auth/login/", {
+    mutationFn: async () => {
+      const response = await axios.post(DOMAIN + "/auth/login/", {
         email: email.current.value,
         password: password.current.value,
-      }),
-    onSuccess: (data) => {
-      login(data.data.token, data.data.user);
-      router.push("/app");
+      });
+      return response.data;
+    },
+    onSuccess: async (data) => {
+      signIn("credentials", { token: data.data.token });
+
+      router.push("/");
     },
   });
 
@@ -80,16 +81,18 @@ function RegisterForm({ setLogin }) {
   const login = useUserStore((state) => state.login);
   const { mutate, error } = useMutation({
     mutationKey: ["signup"],
-    mutationFn: () =>
-      LoginRequest(DOMAIN + "/auth/signup/", {
+    mutationFn: async () => {
+      const response = await axios.post(DOMAIN + "/auth/signup/", {
         name: name.current.value,
         username: username.current.value,
         email: email.current.value,
         password: password.current.value,
-      }),
+      });
+      return response.data;
+    },
     onSuccess: (data) => {
-      login(data.data.token, data.data.user);
-      router.push("/app");
+      signIn("credentials", { token: data.data.token });
+      router.push("/");
     },
   });
 

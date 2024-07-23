@@ -10,15 +10,18 @@ export const metadata = {
   description: "clone to spotify.music along its lyrics",
 };
 import React from "react";
-import ReactQueryProvider from "@/utils/ReactQueryProvider";
-import NotestickProvider from "@/utils/NotestickProvider";
+import ReactQueryProvider from "@/components/providers/ReactQueryProvider";
+import NotestickProvider from "@/components/providers/NotestickProvider";
+import NextAuthProvider from "@/components/providers/NextAuthProvider";
 
 const layout = ({ children }) => {
   return (
     <html lang="en">
       <body className={`bg-black ${inter.className}`}>
         <NotestickProvider />
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <NextAuthProvider>
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </NextAuthProvider>
       </body>
     </html>
   );

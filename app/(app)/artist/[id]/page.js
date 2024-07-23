@@ -5,8 +5,9 @@ import { notFound } from "next/navigation";
 import { DOMAIN } from "@/utils/constant";
 import { InfoHeader } from "../../collection/[id]/PlayList/InfoHeader";
 import { ProfileTopSong } from "../../user/[id]/profile/ProfileTopSong";
-import { CardRow } from "../../user/[id]/profile/CardRow";
+
 import ArtistSection from "../components/ArtistSection";
+import { CardRow } from "../../user/[id]/profile/CardRow";
 
 const Profile = async ({ params }) => {
   const response = await fetch(DOMAIN + "/user/" + params.id, {
