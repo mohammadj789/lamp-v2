@@ -1,15 +1,14 @@
 "use client";
-import { HeartSVG, MenuSVG, PauseSVG, PlaySVG } from "@/svg/Play";
+
 import useLampStore from "@/store/store";
-import React, { useState } from "react";
+import React from "react";
 import { convertSecondsToMMSS } from "@/utils/secondsToMuinets";
-import { LikeButton } from "@/app/app/components/Player/LikeButton";
-import ClickAwayListener from "react-click-away-listener";
+
 import { MenueButton } from "../../collection/[id]/PlayList/MenueButton";
 
 export default function QueueItem(props) {
   const chageCurrentQueue = useLampStore(
-    (state) => state.chageCurrentQueue
+    (state) => state.chageCurrentQueue,
   );
   const isPlaying = false;
   return (

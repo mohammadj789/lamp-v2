@@ -26,7 +26,7 @@ const LikeCollection = ({ collection, likes, ownerId }) => {
       }),
   });
   const isFave = data?.collectioans?.wished?.some(
-    (item) => item._id === collection
+    (item) => item._id === collection,
   );
 
   const LikeCollection = async ({ playlist }) => {
@@ -35,7 +35,7 @@ const LikeCollection = ({ collection, likes, ownerId }) => {
       {},
       {
         headers: { Authorization: "Bearer " + TOKEN },
-      }
+      },
     );
     return response.data;
   };
@@ -51,7 +51,6 @@ const LikeCollection = ({ collection, likes, ownerId }) => {
         : setIsliked((prev) => prev - 1);
     },
   });
-  console.log(isliked);
 
   if (userId !== ownerId)
     return (

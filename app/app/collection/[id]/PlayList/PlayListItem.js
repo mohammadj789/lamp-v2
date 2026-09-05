@@ -9,7 +9,7 @@ import { MenueButton } from "./MenueButton";
 export default function PlayListItem(props) {
   const track_id = useLampStore((state) => state.track.id);
   const Collection_id = useLampStore(
-    (state) => state.track.collection
+    (state) => state.track.collection,
   );
 
   const setTrack = useLampStore((state) => state.setTrack);

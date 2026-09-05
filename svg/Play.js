@@ -14,8 +14,8 @@ export const PlaySVG = ({ width, height, fill }) => (
 );
 export const PauseSVG = ({ width, height, fill }) => (
   <svg
-    width={width || "24"}
-    height={height || "24"}
+    width={width || "22"}
+    height={height || "22"}
     viewBox="0 0 24 24"
     fill={"none"}
     xmlns="http://www.w3.org/2000/svg"

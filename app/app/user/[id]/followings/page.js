@@ -6,11 +6,9 @@ const page = async ({ params }) => {
     DOMAIN + "/user/followings/" + params.id,
     {
       cache: "no-cache",
-    }
+    },
   );
   const data = await response.json();
-
-  console.log(data);
 
   return (
     <main className="w-full text-white px-3 flex flex-col gap-3 pt-16">

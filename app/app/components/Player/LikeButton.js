@@ -9,6 +9,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import axios from "axios";
+import { LoadingDots } from "../ui/LoadingDots";
 
 export function LikeButton({ id }) {
   const TOKEN = useUserStore((state) => state.token);
@@ -21,12 +22,12 @@ export function LikeButton({ id }) {
     const response = await axios.post(
       DOMAIN + "/track/favorite/" + id,
       {},
-      { headers: { Authorization: "Bearer " + TOKEN } }
+      { headers: { Authorization: "Bearer " + TOKEN } },
     );
     return response.data;
   };
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["like"],
     mutationFn: FetchLike,
     onSuccess: () =>
@@ -39,7 +40,13 @@ export function LikeButton({ id }) {
       onClick={() => mutate()}
       className="flex justify-center w-8 h-full right-0 items-center text-gray-300"
     >
-      {isfave ? <FillHeartSVG /> : <HeartSVG />}
+      {isPending ? (
+        <LoadingDots />
+      ) : isfave ? (
+        <FillHeartSVG />
+      ) : (
+        <HeartSVG />
+      )}
     </button>
   );
 }

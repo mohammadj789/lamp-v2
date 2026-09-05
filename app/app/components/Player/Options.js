@@ -30,7 +30,7 @@ function FriendStatus() {
       ...prv.filter(
         (item) =>
           item.user.username !== data.user.username &&
-          item.expire - Date.now() > 0
+          item.expire - Date.now() > 0,
       ),
       data,
     ]);
@@ -40,19 +40,20 @@ function FriendStatus() {
     setStatus((prv) =>
       prv.filter(
         (item) =>
-          item.song.id !== data.song && item.user.id !== data.user
-      )
+          item.song.id !== data.song && item.user.id !== data.user,
+      ),
     );
   };
 
   useEffect(() => {
+    if (!user_id) return; // wait for hydration / auth before connecting
+
     const socket = io(DOMAIN + "/socket", {
-      extraHeaders: {
-        id: user_id,
-      },
+      extraHeaders: { id: user_id },
     });
     socket.on("log", updateuserHandller);
     socket.on("expire", expireHandller);
+
     return () => {
       socket.disconnect();
     };

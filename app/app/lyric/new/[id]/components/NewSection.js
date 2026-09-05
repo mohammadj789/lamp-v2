@@ -25,7 +25,7 @@ const NewSection = ({ data }) => {
           headers: {
             Authorization: "Bearer " + TOKEN,
           },
-        }
+        },
       );
       return response.data;
     },
@@ -34,8 +34,6 @@ const NewSection = ({ data }) => {
       enqueueSnackbar(data.message);
     },
     onError: (data) => {
-      console.log(data.response.data.errors.message);
-
       enqueueSnackbar(data.response.data.errors.message);
     },
   });
@@ -46,8 +44,6 @@ const NewSection = ({ data }) => {
           e.preventDefault();
           lineRef.current.value.trim().length > 1 &&
             setLine((prv) => {
-              console.log(lineRef.current.value.trim());
-
               return [...prv, lineRef.current.value.trim()];
             });
         }}
@@ -76,8 +72,6 @@ const NewSection = ({ data }) => {
           <button
             onClick={() => {
               if (line.length > 10) {
-                console.log(data, "sdd");
-
                 mutate();
               }
             }}

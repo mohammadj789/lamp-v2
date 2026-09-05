@@ -61,8 +61,8 @@ export function ControllButtons(props) {
           onClick={setPauseHandler}
         >
           <PauseSVG
-            width={props.pausesize ?? "21px"}
-            height={props.pausesize ?? "21px"}
+            width={props.pausesize ?? "18px"}
+            height={props.pausesize ?? "18px"}
           />
         </button>
       )}

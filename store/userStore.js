@@ -54,13 +54,10 @@ const store = (set, get) => ({
   },
 
   toogleFollowings: (id) => {
-    console.log(...get().user.following, id, "sdsdsd");
-
     const followings = [...get().user.following];
     const index = followings.indexOf(id);
     if (index > -1) followings.splice(index, 1);
     else followings.push(id);
-    console.log(followings);
 
     set({
       user: {
@@ -79,11 +76,11 @@ const useUserStore = create(
       partialize: (state) =>
         Object.fromEntries(
           Object.entries(state).filter(([key]) =>
-            ["token"].includes(key)
-          )
+            ["token"].includes(key),
+          ),
         ),
-    })
-  )
+    }),
+  ),
 );
 
 export default useUserStore;

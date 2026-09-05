@@ -57,7 +57,7 @@ function AddToCollectionButton({ id }) {
     const response = await axios.post(
       DOMAIN + "/collection/add/",
       { trackID: track, playlistID: playlist },
-      { headers: { Authorization: "Bearer " + TOKEN } }
+      { headers: { Authorization: "Bearer " + TOKEN } },
     );
     return response.data;
   };
@@ -128,7 +128,7 @@ function RemoveFromCollectionButton({ id, collection }) {
       {
         headers: { Authorization: "Bearer " + TOKEN },
         data: { trackID: track, playlistID: playlist },
-      }
+      },
     );
     return response.data;
   };

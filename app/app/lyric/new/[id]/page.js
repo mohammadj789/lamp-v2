@@ -8,7 +8,6 @@ const page = async ({ params }) => {
     cache: "no-cache",
   });
   const data = await response.json();
-  console.log(data);
 
   if (!data || data?.errors || data?.track?.lyric) notFound();
 

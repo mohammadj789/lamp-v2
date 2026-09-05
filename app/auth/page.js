@@ -15,7 +15,7 @@ function LoginForm({ setLogin }) {
   const email = useRef();
   const password = useRef();
   const router = useRouter();
-  const { mutate, data, error } = useMutation({
+  const { mutate, isPending, error } = useMutation({
     mutationKey: ["login"],
     mutationFn: () =>
       LoginRequest(DOMAIN + "/auth/login/", {
@@ -58,7 +58,7 @@ function LoginForm({ setLogin }) {
         </p>
       )}
       <button className="w-full bg-green-500 text-xs p-2 rounded-3xl font-bold mb-2">
-        Log in
+        {isPending ? "Logging in..." : " Log in"}
       </button>
 
       <button
@@ -78,7 +78,7 @@ function RegisterForm({ setLogin }) {
   const password = useRef();
   const router = useRouter();
   const login = useUserStore((state) => state.login);
-  const { mutate, error } = useMutation({
+  const { mutate, error, isPending } = useMutation({
     mutationKey: ["signup"],
     mutationFn: () =>
       LoginRequest(DOMAIN + "/auth/signup/", {
@@ -139,7 +139,7 @@ function RegisterForm({ setLogin }) {
         </p>
       )}
       <button className="w-full bg-green-500 text-xs p-2 rounded-3xl font-semibold mb-2">
-        Register
+        {isPending ? "Registering..." : "Register"}
       </button>
       <button
         onClick={() => setLogin(true)}

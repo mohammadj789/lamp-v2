@@ -5,19 +5,20 @@ import useUserStore from "@/store/userStore";
 import { DOMAIN } from "@/utils/constant";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
+
 export const AudioCore = () => {
   const TOKEN = useUserStore((state) => state.token);
 
   const track_id = useStore(useLampStore, (state) => state.track.id);
   const track_collection = useStore(
     useLampStore,
-    (state) => state.track.collection
+    (state) => state.track.collection,
   );
 
   const lastChange = useStore(
     useLampStore,
-    (state) => state.lastChange
+    (state) => state.lastChange,
   );
 
   const CurTime = useLampStore((state) => state.currentTime);
@@ -29,70 +30,126 @@ export const AudioCore = () => {
   const mute = useLampStore((state) => state.mute);
   const QueueToNext = useLampStore((state) => state.QueueToNext);
 
-  const audio = useRef(
-    typeof window !== "undefined" ? new Audio() : null
-  );
-  const { mutate, isPending } = useMutation({
+  // Lazily create the Audio element once, not on every render
+  const audio = useRef(null);
+  if (audio.current === null && typeof window !== "undefined") {
+    audio.current = new Audio();
+  }
+
+  const { mutate } = useMutation({
     mutationKey: ["get track"],
     mutationFn: async () =>
-      !isPending &&
-      TOKEN &&
-      track_id &&
-      (await axios.get(DOMAIN + "/track/update-stats/" + track_id, {
-        headers: { Authorization: "bearer " + TOKEN },
-      })),
+      (
+        await axios.get(DOMAIN + "/track/update-stats/" + track_id, {
+          headers: { Authorization: "bearer " + TOKEN },
+        })
+      ).data,
     onSuccess: () => {
+      if (!audio.current) return;
       audio.current.src = DOMAIN + "/track/stream/" + track_id;
       audio.current.load();
-      audio.current.play().catch((e) => e);
-      togglePlay();
+      audio.current
+        .play()
+        .then(() => togglePlay())
+        .catch((e) => console.error("play() failed:", e));
       audio.current.currentTime = 0;
     },
+    onError: (error) => {
+      console.error("update-stats request failed:", error);
+    },
   });
+
+  // Fetch stats + load/play new track whenever track_id changes
+  const hasHydratedTrack = useRef(false);
+  const prevTrackId = useRef(null);
+
   useEffect(() => {
-    try {
-      mutate();
-      audio.current.ontimeupdate = () =>
-        setCurTime(audio.current.currentTime);
-      audio.current.onended = () => {
-        if (QueueToNext()) {
-          audio.current.play();
-        } else audio.current.pause();
-      };
-      audio.current.onloadedmetadata = () =>
-        setDuration(audio.current.duration);
-    } catch (error) {}
+    if (!audio.current || !TOKEN || !track_id) return;
+
+    // First time we see a real track_id => this is hydration from persisted
+    // state, not a user action. Prep the element but don't autoplay.
+    if (!hasHydratedTrack.current) {
+      hasHydratedTrack.current = true;
+      prevTrackId.current = track_id;
+
+      audio.current.src = DOMAIN + "/track/stream/" + track_id;
+      audio.current.load();
+
+      return;
+    }
+
+    // Ignore no-op re-renders where track_id didn't actually change
+    if (prevTrackId.current === track_id) return;
+    prevTrackId.current = track_id;
+
+    mutate(); // real track change → fetch stats, load, play
+
+    audio.current.ontimeupdate = () =>
+      setCurTime(audio.current.currentTime);
+    audio.current.onended = () => {
+      if (QueueToNext()) {
+        audio.current.play().catch((e) => console.error(e));
+      } else {
+        audio.current.pause();
+      }
+    };
+    audio.current.onloadedmetadata = () =>
+      setDuration(audio.current.duration);
+
     return () => {
+      if (!audio.current) return;
       audio.current.onended = null;
       audio.current.ontimeupdate = null;
       audio.current.onloadedmetadata = null;
     };
   }, [
     track_id,
-    setCurTime,
+    TOKEN,
     track_collection,
+    setCurTime,
     setDuration,
     QueueToNext,
+    mutate,
   ]);
-
+  // Volume / mute
   useEffect(() => {
-    if (isFinite(volume)) {
-      if (mute) audio.current.volume = 0;
-      else audio.current.volume = volume;
-    }
-  }, [volume, mute, audio]);
+    if (!audio.current || !isFinite(volume)) return;
+    audio.current.volume = mute ? 0 : volume;
+  }, [volume, mute]);
 
+  // Reset to start
   useEffect(() => {
+    if (!audio.current) return;
     if (CurTime === 0) audio.current.currentTime = 0;
   }, [CurTime]);
 
+  // Seek on external change
   useEffect(() => {
-    if (isFinite(lastChange)) audio.current.currentTime = lastChange;
-  }, [lastChange, audio]);
+    if (!audio.current || !isFinite(lastChange)) return;
+    audio.current.currentTime = lastChange;
+  }, [lastChange]);
 
+  // Play / pause toggle
   useEffect(() => {
-    if (!play) audio.current.pause();
-    else if (play) audio.current.play();
-  }, [play, audio]);
+    if (!audio.current) return;
+    if (!play) {
+      audio.current.pause();
+    } else {
+      audio.current
+        .play()
+        .catch((e) => console.error("play() failed:", e));
+    }
+  }, [play]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (audio.current) {
+        audio.current.pause();
+        audio.current.src = "";
+      }
+    };
+  }, []);
+
   return null;
 };

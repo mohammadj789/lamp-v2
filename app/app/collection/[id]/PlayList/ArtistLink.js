@@ -6,7 +6,6 @@ import React from "react";
 const ArtistLink = ({ userId, type }) => {
   const user_id = useUserStore((state) => state.user.id);
   const role = useUserStore((state) => state.user.role);
-  console.log(role);
 
   if (user_id === userId && role === "ARTIST") {
     return (

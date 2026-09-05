@@ -120,11 +120,11 @@ const useLampStore = create(
       partialize: (state) =>
         Object.fromEntries(
           Object.entries(state).filter(([key]) =>
-            ["track", "queue"].includes(key)
-          )
+            ["track", "queue"].includes(key),
+          ),
         ),
-    })
-  )
+    }),
+  ),
 );
 
 export default useLampStore;

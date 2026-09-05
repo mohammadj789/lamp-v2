@@ -4,11 +4,8 @@ import useUserStore from "@/store/userStore";
 import { PauseSVG, PlaySVG } from "@/svg/Play";
 import { DOMAIN } from "@/utils/constant";
 import { getRequest } from "@/utils/getRequest";
-
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { useEffect } from "react";
-import { io } from "socket.io-client";
 
 export function TrackPlay({ item }) {
   const setTrack = useLampStore((state) => state.setTrack);
@@ -48,7 +45,6 @@ const RecentlyPlayed = ({ taste }) => {
   });
 
   const DataTracks = taste ? data?.suggestedTracks : data?.streams;
-  console.log(DataTracks);
 
   if (DataTracks?.length > 0)
     return (
