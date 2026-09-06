@@ -8,18 +8,18 @@ import { getRequest } from "@/utils/getRequest";
 export default async function Home() {
   const ArtistDataResponse = await fetch(
     DOMAIN + "/user/artist/popular",
-    { next: { revalidate: 900 } }
+    { next: { revalidate: 900 } },
   );
   const ArtistData = await ArtistDataResponse.json();
 
   const CollectionDataResponse = await fetch(
     DOMAIN + "/collection/topcollection",
-    { next: { revalidate: 900 } }
+    { next: { revalidate: 900 } },
   );
   const CollectionData = await CollectionDataResponse.json();
   const TopSongDataResponse = await fetch(
     DOMAIN + "/track/toptracks",
-    { next: { revalidate: 900 } }
+    { next: { revalidate: 900 } },
   );
   const TopSongData = await TopSongDataResponse.json();
   return (

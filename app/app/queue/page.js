@@ -1,27 +1,28 @@
 "use client";
 import useLampStore from "@/store/store";
 import React from "react";
-import PlayListItem from "../collection/[id]/PlayList/PlayListItem";
-import { DOMAIN } from "@/utils/constant";
+
 import QueueItem from "./components/QueueItem";
+import { useCurrentTrack } from "@/hooks/Requests/useCurrentTrack";
 
 const Page = () => {
   const queue = useLampStore((state) => state.queue);
-  const track = useLampStore((state) => state.track);
+
+  const { data: track } = useCurrentTrack();
 
   return (
     <main className="w-full text-white px-3 flex flex-col gap-3 pt-16 sm:pb-14">
-      {track.id && (
+      {track && (
         <div>
           <h3>Now Playing</h3>
 
           <QueueItem
-            id={track.id}
+            id={track._id}
             image={track.image}
             isPlaying
             song={{
               title: track.title,
-              artist: track.credit,
+              artist: track.artist.artist_name,
               album: track.album || "21",
               genre: track.genre || "hip hop",
               lyric: track.lyric,

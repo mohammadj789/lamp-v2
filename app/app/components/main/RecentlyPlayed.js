@@ -19,11 +19,7 @@ export function TrackPlay({ item }) {
           setPause();
         } else
           setTrack({
-            title: item.title,
-            credit: item.artist.artist_name,
-            image: item.image,
             id: item._id,
-            lyric: item.lyric,
             collection: null,
           });
       }}
@@ -64,7 +60,7 @@ const RecentlyPlayed = ({ taste }) => {
               >
                 <img
                   className="h-full aspect-square rounded-md object-cover"
-                  src={DOMAIN + track?.image}
+                  src={track?.image}
                   alt={track?.title}
                 />
 

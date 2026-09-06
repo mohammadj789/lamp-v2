@@ -1,4 +1,5 @@
 "use client";
+import { useCurrentTrack } from "@/hooks/Requests/useCurrentTrack";
 import { ProgressBar } from "../ui/ProgressBar";
 import useLampStore from "@/store/store";
 import useUiStore from "@/store/uiStore";
@@ -8,14 +9,14 @@ function MobilePlayer(props) {
   const duration = useStore(useLampStore, (state) => state.duration);
 
   const toggleFullPlayer = useUiStore(
-    (state) => state.toggleFullPlayer
+    (state) => state.toggleFullPlayer,
   );
   const play = useStore(useLampStore, (state) => state.play);
-  const detail = useStore(useLampStore, (state) => state.track);
 
+  const { data: detail } = useCurrentTrack();
   const currentTime = useStore(
     useLampStore,
-    (state) => state.currentTime
+    (state) => state.currentTime,
   );
   const setPlayHandler = useLampStore((state) => state.togglePlay);
   const setPauseHandler = useLampStore((state) => state.togglePause);
@@ -36,7 +37,7 @@ function MobilePlayer(props) {
             {detail?.title}
           </p>
           <p className="whitespace-nowrap text-xs">
-            {detail?.credit}
+            {detail?.artist.artist_name}
           </p>
         </div>
         <div className="flex items-center justify-around min-w-[88px]">

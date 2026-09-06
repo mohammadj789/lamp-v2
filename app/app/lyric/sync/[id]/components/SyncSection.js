@@ -3,22 +3,25 @@
 import useLampStore from "@/store/store";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useStore } from "zustand";
-import { LyricLine } from "../../../[id]/components/LyricLine";
+
 import { SyncLyricLine } from "./SyncLyricLine";
 import useUserStore from "@/store/userStore";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import { DOMAIN } from "@/utils/constant";
+import { useCurrentTrack } from "@/hooks/Requests/useCurrentTrack";
 
 const SyncSection = ({ data }) => {
-  const router = useRouter();
+  const { back, replace } = useRouter();
   const [lyrics, setLyrics] = useState(data.lyric.lyric);
-  const lyric_id = useLampStore((state) => state.track.lyric);
 
-  if (lyric_id !== data.lyric._id) router.back();
+  const { data: detail } = useCurrentTrack();
+  const lyric_id = detail.lyric;
 
+  useEffect(() => {
+    if (lyric_id !== data.lyric._id) back();
+  }, [lyric_id, data.lyric._id, back]);
   const curTime = useLampStore((state) => state.currentTime);
   const changeHandler = useLampStore((state) => state.updateAudio);
   const changeTimeHandler = (time) => {
@@ -34,7 +37,7 @@ const SyncSection = ({ data }) => {
   const TOKEN = useUserStore((state) => state.token);
   const timeStamps = useMemo(
     () => lyrics.map((item) => item.start),
-    [lyrics]
+    [lyrics],
   );
   const { mutate, isPending } = useMutation({
     mutationKey: ["sync lyric"],
@@ -49,12 +52,12 @@ const SyncSection = ({ data }) => {
           headers: {
             Authorization: "Bearer " + TOKEN,
           },
-        }
+        },
       );
       return response.data;
     },
     onSuccess: (data) => {
-      router.replace("/app");
+      replace("/app");
       enqueueSnackbar(data.message);
     },
     onError: (data) => {

@@ -1,9 +1,10 @@
 "use client";
+import { useCurrentTrack } from "@/hooks/Requests/useCurrentTrack";
 import useLampStore from "@/store/store";
 import { useStore } from "@/store/useStore";
 import useUserStore from "@/store/userStore";
 import { DOMAIN } from "@/utils/constant";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useRef } from "react";
 
@@ -20,7 +21,6 @@ export const AudioCore = () => {
     useLampStore,
     (state) => state.lastChange,
   );
-
   const CurTime = useLampStore((state) => state.currentTime);
   const setCurTime = useLampStore((state) => state.updateTime);
   const setDuration = useLampStore((state) => state.setDuration);
@@ -36,8 +36,9 @@ export const AudioCore = () => {
     audio.current = new Audio();
   }
 
+  useCurrentTrack();
   const { mutate } = useMutation({
-    mutationKey: ["get track"],
+    mutationKey: ["update track status", track_id],
     mutationFn: async () =>
       (
         await axios.get(DOMAIN + "/track/update-stats/" + track_id, {
@@ -65,7 +66,6 @@ export const AudioCore = () => {
 
   useEffect(() => {
     if (!audio.current || !TOKEN || !track_id) return;
-
     // First time we see a real track_id => this is hydration from persisted
     // state, not a user action. Prep the element but don't autoplay.
     if (!hasHydratedTrack.current) {
@@ -74,16 +74,13 @@ export const AudioCore = () => {
 
       audio.current.src = DOMAIN + "/track/stream/" + track_id;
       audio.current.load();
+    } else {
+      // Ignore no-op re-renders where track_id didn't actually change
+      if (prevTrackId.current === track_id) return;
+      prevTrackId.current = track_id;
 
-      return;
+      mutate(); // real track change → fetch stats, load, play
     }
-
-    // Ignore no-op re-renders where track_id didn't actually change
-    if (prevTrackId.current === track_id) return;
-    prevTrackId.current = track_id;
-
-    mutate(); // real track change → fetch stats, load, play
-
     audio.current.ontimeupdate = () =>
       setCurTime(audio.current.currentTime);
     audio.current.onended = () => {
@@ -102,15 +99,7 @@ export const AudioCore = () => {
       audio.current.ontimeupdate = null;
       audio.current.onloadedmetadata = null;
     };
-  }, [
-    track_id,
-    TOKEN,
-    track_collection,
-    setCurTime,
-    setDuration,
-    QueueToNext,
-    mutate,
-  ]);
+  }, [track_id, TOKEN, setCurTime, setDuration, QueueToNext, mutate]);
   // Volume / mute
   useEffect(() => {
     if (!audio.current || !isFinite(volume)) return;

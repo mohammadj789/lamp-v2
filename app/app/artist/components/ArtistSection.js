@@ -20,7 +20,7 @@ function FeatureArtist({
   const searchArtist = async () => {
     const response = await axios.get(
       DOMAIN + "/user/artist/search/" + search,
-      { headers: { Authorization: "Bearer " + TOKEN } }
+      { headers: { Authorization: "Bearer " + TOKEN } },
     );
     return response.data;
   };
@@ -83,7 +83,7 @@ function FeatureArtist({
                 onClick={() => {
                   if (
                     selectedFeature.findIndex(
-                      (feature) => feature._id === item._id
+                      (feature) => feature._id === item._id,
                     ) === -1
                   ) {
                     setSelectedFeature((prev) => [...prev, item]);
@@ -95,7 +95,7 @@ function FeatureArtist({
               >
                 <img
                   className="w-8 h-8 rounded-lg"
-                  src={DOMAIN + item.image}
+                  src={item.image}
                   alt={item.name}
                 />
                 <div className="flex flex-col justify-between ">
@@ -145,7 +145,7 @@ const ArtistSection = ({ userId }) => {
     formData.append("genre", genre.current.selectedOptions["0"].text);
     formData.append(
       "features",
-      selectedFeature.map((item) => item._id)
+      selectedFeature.map((item) => item._id),
     );
 
     const response = await axios.post(
@@ -160,11 +160,11 @@ const ArtistSection = ({ userId }) => {
         onUploadProgress: (progressEvent) => {
           setProgress(
             Math.round(
-              (progressEvent.loaded / progressEvent.total) * 100
-            )
+              (progressEvent.loaded / progressEvent.total) * 100,
+            ),
           );
         },
-      }
+      },
     );
     return response.data;
   };

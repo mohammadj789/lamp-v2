@@ -27,7 +27,7 @@ export function FloatingHeader(props) {
       </div>
       <Link href={"/app/user/" + id} className="h-fit">
         <img
-          src={DOMAIN + img}
+          src={img}
           className="w-10 h-10 object-cover rounded-full border-[6px] border-zinc-800 border-opacity-80"
           alt="profile"
         />

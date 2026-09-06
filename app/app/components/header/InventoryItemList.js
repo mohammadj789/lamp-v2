@@ -26,7 +26,7 @@ function NewCollectionButton({ hide }) {
           ? selectRef.current.selectedOptions["0"].text.toLowerCase()
           : "playlist"),
       { title: nameRef.current.value },
-      { headers: { Authorization: "Bearer " + TOKEN } }
+      { headers: { Authorization: "Bearer " + TOKEN } },
     );
     return response.data;
   };
@@ -147,7 +147,7 @@ const InventoryItemList = ({ hide }) => {
           hide={hide}
           key={item._id}
           // isPlaying
-          image={item.image ? DOMAIN + item.image : "/hill.jpg"}
+          image={item.image ? item.image : "/hill.jpg"}
           title={item.title}
           type={item.type}
           id={item._id}
@@ -161,7 +161,7 @@ const InventoryItemList = ({ hide }) => {
             hide={hide}
             key={item._id}
             // isPlaying
-            image={item.image ? DOMAIN + item.image : "/hill.jpg"}
+            image={item.image ? item.image : "/hill.jpg"}
             title={item.title}
             type={item.type}
             id={item._id}
@@ -172,7 +172,7 @@ const InventoryItemList = ({ hide }) => {
         <InventoryItem
           hide
           key={item._id}
-          image={item.image ? DOMAIN + item.image : "/hill.jpg"}
+          image={item.image ? item.image : "/hill.jpg"}
           title={item.name}
           type={"artist"}
           id={item._id}

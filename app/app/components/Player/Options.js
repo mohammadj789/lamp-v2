@@ -1,4 +1,5 @@
 "use client";
+import { useCurrentTrack } from "@/hooks/Requests/useCurrentTrack";
 import { ProgressBar } from "../ui/ProgressBar";
 import useLampStore from "@/store/store";
 import { useStore } from "@/store/useStore";
@@ -79,11 +80,8 @@ function FriendStatus() {
                   <div
                     onClick={() =>
                       setTrack({
-                        title: item.song.title,
-                        credit: item.song.credit,
-                        image: DOMAIN + item.song.image,
                         id: item.song.id,
-                        lyric: item.song.lyric,
+
                         collection: null,
                       })
                     }
@@ -116,8 +114,8 @@ function FriendStatus() {
 
 export function Optioans(props) {
   const volume = useStore(useLampStore, (state) => state.volume);
-  const lyric = useStore(useLampStore, (state) => state.track.lyric);
-  const track = useLampStore((state) => state.track.id);
+  const { data: track } = useCurrentTrack();
+
   const mute = useStore(useLampStore, (state) => state.mute);
   const toggleMute = useLampStore((state) => state.toggleMute);
   const changeVolume = useLampStore((state) => state.changeVolume);
@@ -136,16 +134,16 @@ export function Optioans(props) {
       >
         <MenuSVG />
       </Link>
-      {lyric ? (
+      {track?.lyric ? (
         <Link
-          href={"/app/lyric/" + lyric}
+          href={"/app/lyric/" + track.lyric}
           className={`text-gray-400 rounded-full flex items-center h-8 w-8 p-1 hover:text-white`}
         >
           <MicSVG />
         </Link>
       ) : (
         <Link
-          href={"/app/lyric/new/" + track}
+          href={"/app/lyric/new/" + track?.id}
           className={`text-gray-400 rounded-full flex items-center h-8 w-8 p-1 hover:text-white`}
         >
           <MicSVG />

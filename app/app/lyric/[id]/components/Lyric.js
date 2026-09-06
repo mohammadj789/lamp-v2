@@ -5,16 +5,21 @@ import useLampStore from "@/store/store";
 import { useStore } from "zustand";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useCurrentTrack } from "@/hooks/Requests/useCurrentTrack";
 
 export function Lyric({ data }) {
-  const router = useRouter();
-  const lyric_id = useLampStore((state) => state.track.lyric);
-  if (lyric_id !== data.lyric._id) router.back();
+  const { back } = useRouter();
+  const { data: detail } = useCurrentTrack();
+  const lyric_id = detail.lyric;
+
+  useEffect(() => {
+    if (lyric_id !== data.lyric._id) back();
+  }, [lyric_id, data.lyric._id, back]);
 
   const next = useRef();
   const curTime = useStore(
     useLampStore,
-    (state) => state.currentTime
+    (state) => state.currentTime,
   );
   const changeHandler = useLampStore((state) => state.updateAudio);
 

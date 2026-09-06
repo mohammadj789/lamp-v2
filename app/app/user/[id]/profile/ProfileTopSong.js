@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 
-import { DOMAIN } from "@/utils/constant";
 import PlayListItem from "@/app/app/collection/[id]/PlayList/PlayListItem";
 
 export function ProfileTopSong(props) {
@@ -18,7 +17,7 @@ export function ProfileTopSong(props) {
               <PlayListItem
                 key={song._id}
                 id={song._id}
-                image={DOMAIN + song.image}
+                image={song.image}
                 song={{
                   title: song.title,
                   artist: song.artist.artist_name,

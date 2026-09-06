@@ -10,18 +10,23 @@ import { DownSVG, HeartSVG, MenuSVG, OptionSVG } from "@/svg/Play";
 import { LikeButton } from "./LikeButton";
 import Link from "next/link";
 import { MenueButton } from "../../collection/[id]/PlayList/MenueButton";
+import { useCurrentTrack } from "@/hooks/Requests/useCurrentTrack";
 function MobileFullPlayer(props) {
   const fullPlayer = useUiStore((state) => state.fullPlayer);
   const toggleFullPlayer = useUiStore(
-    (state) => state.toggleFullPlayer
+    (state) => state.toggleFullPlayer,
   );
-  const detail = useStore(useLampStore, (state) => state.track);
+  const collection = useStore(
+    useLampStore,
+    (state) => state.track.collection,
+  );
 
+  const { data: detail } = useCurrentTrack();
   const play = useStore(useLampStore, (state) => state.play);
 
   const currentTime = useStore(
     useLampStore,
-    (state) => state.currentTime
+    (state) => state.currentTime,
   );
   const duration = useStore(useLampStore, (state) => state.duration);
   const setPlayHandler = useLampStore((state) => state.togglePlay);
@@ -51,15 +56,15 @@ function MobileFullPlayer(props) {
               <DownSVG />
             </button>
             <p className="w-full text-center text-[.7rem] font-medium">
-              {detail.credit}
+              {detail?.artist.artist_name}
             </p>
             <MenueButton
               id={detail?.id}
-              credit={detail.credit}
+              credit={detail?.artist.artist_name}
               image={detail?.image}
               lyric={detail?.lyric}
               title={detail?.title}
-              collection={detail?.collection}
+              collection={collection}
             />
           </div>
           <div className="h-full w-full flex items-center justify-center">
@@ -76,11 +81,11 @@ function MobileFullPlayer(props) {
                   {detail.title}
                 </p>
                 <p className="whitespace-nowrap text-base font-normal text-gray-300">
-                  {detail.credit}
+                  {detail?.artist.artist_name}
                 </p>
               </div>
               <div className="flex items-center">
-                <LikeButton id={detail?.id} />
+                <LikeButton id={detail?._id} />
                 <Link
                   onClick={toggleFullPlayer}
                   href={"/app/queue"}

@@ -27,7 +27,7 @@ export default function PlayList(props) {
         id={data?._id}
         type={data?.type}
         status={"public"}
-        image={props.favorite ? "/girl.jpg" : DOMAIN + data.image}
+        image={props.favorite ? "/girl.jpg" : data.image}
         likes={data.likes}
         title={data?.title}
         credit={{
@@ -49,7 +49,7 @@ export default function PlayList(props) {
           <PlayListItem
             key={song._id}
             id={song._id}
-            image={DOMAIN + song.image}
+            image={song.image}
             song={{
               title: song.title,
               artist: song.artist.artist_name,

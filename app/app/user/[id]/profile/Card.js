@@ -1,5 +1,3 @@
-import { DOMAIN } from "@/utils/constant";
-import { fetchCollections } from "@/utils/fetchCollections";
 import Link from "next/link";
 import React from "react";
 import { CollectionPlay } from "./CollectionPlay";
@@ -14,7 +12,7 @@ const Card = async ({ item, withoutBtn, type }) => {
         <img
           alt="card thumbnail"
           className="object-cover rounded-md w-full h-full"
-          src={item.image ? DOMAIN + item.image : "/girl.jpg"}
+          src={item.image ? item.image : "/girl.jpg"}
         />
         {!withoutBtn && <CollectionPlay id={item._id} />}
       </div>

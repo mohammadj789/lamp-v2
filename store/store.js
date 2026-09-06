@@ -1,5 +1,5 @@
 import { storage } from "@/utils/CookieStorage";
-import { DOMAIN } from "@/utils/constant";
+
 import { create } from "zustand";
 import {
   persist,
@@ -35,7 +35,7 @@ const store = (set, get) => ({
       track: {
         title: last.title,
         credit: last.artist.artist_name,
-        image: DOMAIN + last.image,
+        image: last.image,
         id: last._id,
         lyric: last.lyric,
         collection: collection,
@@ -96,11 +96,7 @@ const store = (set, get) => ({
   setTrack: (track) =>
     set({
       track: {
-        title: track.title,
-        image: track.image,
-        credit: track.credit,
         id: track.id,
-        lyric: track.lyric,
         collection: track.collection,
       },
       currentTime: 0,

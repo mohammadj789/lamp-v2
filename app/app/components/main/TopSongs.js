@@ -1,6 +1,3 @@
-import { DOMAIN } from "@/utils/constant";
-import { getRequest } from "@/utils/getRequest";
-
 import React from "react";
 import { TrackPlay } from "./RecentlyPlayed";
 
@@ -16,7 +13,7 @@ const TopSongs = async ({ data }) => {
           >
             <img
               className="h-full aspect-square rounded-md object-cover"
-              src={DOMAIN + item.image}
+              src={item.image}
               alt={item.title}
             />
 

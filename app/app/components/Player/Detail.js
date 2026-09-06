@@ -4,10 +4,10 @@ import useLampStore from "@/store/store";
 import { useStore } from "@/store/useStore";
 import { revalidateTag } from "next/cache";
 import { LikeButton } from "./LikeButton";
+import { useCurrentTrack } from "@/hooks/Requests/useCurrentTrack";
 
 export function Detail(props) {
-  const detail = useStore(useLampStore, (state) => state.track);
-
+  const { data: detail } = useCurrentTrack();
   return (
     <div className="max-w-sm w-1/4 overflow-hidden flex-shrink-0 text-gray-100 flex relative items-center py-2 gap-4">
       <img
@@ -21,11 +21,11 @@ export function Detail(props) {
         </p>
 
         <p className="whitespace-nowrap text-xs text-gray-400">
-          {detail?.credit}
+          {detail?.artist?.artist_name}
         </p>
       </div>
 
-      <LikeButton id={detail?.id} />
+      <LikeButton id={detail?._id} />
     </div>
   );
 }

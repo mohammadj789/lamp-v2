@@ -40,11 +40,7 @@ export default function PlayListItem(props) {
               //   setQueue(props.collection);
               // }
               setTrack({
-                title: props.song.title,
-                credit: props.song.artist,
-                image: props.image,
                 id: props.id,
-                lyric: props.song.lyric,
                 collection: props.collection_id,
               });
             }

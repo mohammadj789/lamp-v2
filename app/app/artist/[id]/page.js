@@ -13,11 +13,10 @@ const Profile = async ({ params }) => {
     cache: "no-cache",
   });
   const data = await response.json();
-
   if (!data || data.profile?.role !== "ARTIST") notFound();
   const filtered = { playlist: [], Single: [], album: [] };
   data.profile?.Collections.forEach((item) =>
-    filtered[item.type].push(item)
+    filtered[item.type].push(item),
   );
 
   return (
@@ -25,9 +24,7 @@ const Profile = async ({ params }) => {
       <InfoHeader
         id={data.profile._id}
         type={"artist"}
-        image={
-          data.profile?.image ? DOMAIN + data.profile?.image : ""
-        }
+        image={data.profile?.image ? data.profile?.image : ""}
         status={"Verified"}
         title={data.profile?.name}
         listener={data.profile?.listenners || 0}

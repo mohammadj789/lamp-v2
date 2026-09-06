@@ -43,7 +43,7 @@ const Page = () => {
           <PlayListItem
             key={track._id}
             id={track._id}
-            image={DOMAIN + track.image}
+            image={track.image}
             isPlaying={track_id === track.id}
             song={{
               title: track.title,
@@ -63,7 +63,7 @@ const Page = () => {
               hide
               selected
               key={item.key}
-              image={item.image ? DOMAIN + item.image : "/hill.jpg"}
+              image={item.image ? item.image : "/hill.jpg"}
               title={item.title}
               id={item._id}
               type={item.type}
