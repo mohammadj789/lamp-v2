@@ -37,6 +37,7 @@ export const AudioCore = () => {
   }
 
   useCurrentTrack();
+
   const { mutate } = useMutation({
     mutationKey: ["update track status", track_id],
     mutationFn: async () =>
@@ -45,15 +46,23 @@ export const AudioCore = () => {
           headers: { Authorization: "bearer " + TOKEN },
         })
       ).data,
-    onSuccess: () => {
+    onSuccess: (data, _vars, context) => {
       if (!audio.current) return;
-      audio.current.src = DOMAIN + "/track/stream/" + track_id;
+
+      // data.song.address is the ready-to-play URL -- no stream endpoint
+      // or manual URL building needed anymore
+      audio.current.src = data.song.address;
       audio.current.load();
-      audio.current
-        .play()
-        .then(() => togglePlay())
-        .catch((e) => console.error("play() failed:", e));
       audio.current.currentTime = 0;
+
+      // Don't autoplay on hydration -- only when the user actually
+      // triggered a real track change
+      if (!context?.isHydration) {
+        audio.current
+          .play()
+          .then(() => togglePlay())
+          .catch((e) => console.error("play() failed:", e));
+      }
     },
     onError: (error) => {
       console.error("update-stats request failed:", error);
@@ -66,21 +75,23 @@ export const AudioCore = () => {
 
   useEffect(() => {
     if (!audio.current || !TOKEN || !track_id) return;
+
     // First time we see a real track_id => this is hydration from persisted
-    // state, not a user action. Prep the element but don't autoplay.
-    if (!hasHydratedTrack.current) {
+    // state, not a user action. Still fetch via the same query, just skip
+    // autoplay.
+    const isHydration = !hasHydratedTrack.current;
+    if (isHydration) {
       hasHydratedTrack.current = true;
       prevTrackId.current = track_id;
-
-      audio.current.src = DOMAIN + "/track/stream/" + track_id;
-      audio.current.load();
+      mutate(undefined, { context: { isHydration: true } });
     } else {
       // Ignore no-op re-renders where track_id didn't actually change
       if (prevTrackId.current === track_id) return;
       prevTrackId.current = track_id;
 
-      mutate(); // real track change → fetch stats, load, play
+      mutate(undefined, { context: { isHydration: false } });
     }
+
     audio.current.ontimeupdate = () =>
       setCurTime(audio.current.currentTime);
     audio.current.onended = () => {
@@ -100,6 +111,7 @@ export const AudioCore = () => {
       audio.current.onloadedmetadata = null;
     };
   }, [track_id, TOKEN, setCurTime, setDuration, QueueToNext, mutate]);
+
   // Volume / mute
   useEffect(() => {
     if (!audio.current || !isFinite(volume)) return;
