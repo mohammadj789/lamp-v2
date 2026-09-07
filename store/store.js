@@ -9,11 +9,7 @@ import {
 const store = (set, get) => ({
   audio: null,
   track: {
-    title: null,
-    Image: null,
-    credit: null,
     id: null,
-    lyric: null,
     collection: null,
   },
   queue: [],
@@ -31,13 +27,8 @@ const store = (set, get) => ({
 
     set({
       queue: [...queue.slice(1)],
-
       track: {
-        title: last.title,
-        credit: last.artist.artist_name,
-        image: last.image,
         id: last._id,
-        lyric: last.lyric,
         collection: collection,
       },
     });
@@ -55,13 +46,8 @@ const store = (set, get) => ({
         queue: [...queue.slice(1)],
         currentTime: 0,
         track: {
-          title: track.title,
-          image: track.image,
-          credit: track?.artist
-            ? track.artist.artist_name
-            : track.credit,
           id: track._id || track.id,
-          lyric: track.lyric,
+          collection: null,
         },
       });
       return true;
@@ -83,13 +69,8 @@ const store = (set, get) => ({
       currentTime: 0,
       queue: queue,
       track: {
-        title: track.title,
-        image: track.image,
-        credit: track?.artist
-          ? track.artist.artist_name
-          : track.credit,
         id: track._id || track.id,
-        lyric: track.lyric,
+        collection: null,
       },
     });
   },

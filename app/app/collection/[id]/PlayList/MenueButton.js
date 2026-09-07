@@ -93,7 +93,7 @@ function AddToCollectionButton({ id }) {
             ?.map((item) => (
               <CollectionItem
                 key={item._id}
-                image={item.image ? DOMAIN + item.image : "/girl.jpg"}
+                image={item.image ? item.image : "/girl.jpg"}
                 title={item.title}
                 onClick={() =>
                   mutate({ playlist: item._id, track: id })
