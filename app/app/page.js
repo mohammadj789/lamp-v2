@@ -3,7 +3,6 @@ import RecentlyPlayed from "./components/main/RecentlyPlayed";
 import TopSongs from "./components/main/TopSongs";
 import { DOMAIN } from "@/utils/constant";
 import { CardRow } from "./user/[id]/profile/CardRow";
-import { getRequest } from "@/utils/getRequest";
 
 export default async function Home() {
   const ArtistDataResponse = await fetch(

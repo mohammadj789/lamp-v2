@@ -1,8 +1,8 @@
 "use client";
 import Loading from "@/app/loading";
-import { useStore } from "@/store/useStore";
+
 import useUserStore from "@/store/userStore";
-import { DOMAIN } from "@/utils/constant";
+
 import { getRequest } from "@/utils/getRequest";
 import { useMutation } from "@tanstack/react-query";
 
@@ -19,7 +19,7 @@ const LoginProvider = ({ children }) => {
   const { mutate, error, isPending } = useMutation({
     mutationKey: ["user"],
     mutationFn: () =>
-      getRequest(DOMAIN + "/auth/", {
+      getRequest("/auth/", {
         Authorization: "Bearer " + token,
       }),
     onSuccess: (data) => login(token, data.data.user),

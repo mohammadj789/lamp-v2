@@ -2,15 +2,15 @@
 import React, { useRef, useState } from "react";
 import { InventoryItem } from "./InventoryItem";
 import { DOMAIN } from "@/utils/constant";
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import useUserStore from "@/store/userStore";
 import { PlusSVG } from "@/svg/Play";
 import Modal from "react-modal";
+import {
+  useInventoryArtists,
+  useInventoryCollections,
+} from "@/hooks/Requests/useInventory";
 
 function NewCollectionButton({ hide }) {
   const user_role = useUserStore((state) => state.user.role);
@@ -105,32 +105,11 @@ function NewCollectionButton({ hide }) {
 }
 
 const InventoryItemList = ({ hide }) => {
-  const TOKEN = useUserStore((state) => state.token);
-  //collections
   const { data: CollectionData, isLoading: CollectionLoading } =
-    useQuery({
-      queryKey: ["collections"],
-      queryFn: async () => {
-        const response = await axios.get(DOMAIN + "/collection", {
-          headers: {
-            Authorization: "Bearer " + TOKEN,
-          },
-        });
-        return response.data;
-      },
-    });
-  //Artists
-  const { data: ARtistData, isLoading: ArtistLoading } = useQuery({
-    queryKey: ["Followed Artist"],
-    queryFn: async () => {
-      const response = await axios.get(DOMAIN + "/user/followings/", {
-        headers: {
-          Authorization: "Bearer " + TOKEN,
-        },
-      });
-      return response.data;
-    },
-  });
+    useInventoryCollections();
+
+  const { data: ARtistData, isLoading: ArtistLoading } =
+    useInventoryArtists();
 
   return (
     <div className="h-2/3 pt-3 overflow-y-scroll overflow-x-hidden">

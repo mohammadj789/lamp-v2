@@ -1,6 +1,6 @@
 import { storage } from "@/utils/CookieStorage";
 import Cookies from "js-cookie";
-import { Cookie } from "next/font/google";
+
 import { create } from "zustand";
 import {
   persist,
@@ -26,6 +26,7 @@ const init = {
 const store = (set, get) => ({
   ...init,
   login: (token, user) => {
+    Cookies.set("lamp_token", token);
     set({
       token: token,
       isAuth: true,

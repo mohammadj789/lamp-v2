@@ -1,13 +1,11 @@
 "use client";
+
+import useColloctions from "@/hooks/Requests/useArtistColloction";
 import useUserStore from "@/store/userStore";
 import { FillHeartSVG, HeartSVG } from "@/svg/Play";
 import { DOMAIN } from "@/utils/constant";
-import { getRequest } from "@/utils/getRequest";
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -18,13 +16,7 @@ const LikeCollection = ({ collection, likes, ownerId }) => {
   const queryClient = useQueryClient();
   const TOKEN = useUserStore((state) => state.token);
   const userId = useUserStore((state) => state.user.id);
-  const { data } = useQuery({
-    queryKey: ["collections"],
-    queryFn: () =>
-      getRequest(DOMAIN + "/collection", {
-        Authorization: "Bearer " + TOKEN,
-      }),
-  });
+  const { data } = useColloctions();
   const isFave = data?.collectioans?.wished?.some(
     (item) => item._id === collection,
   );

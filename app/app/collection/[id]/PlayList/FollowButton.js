@@ -1,8 +1,6 @@
 "use client";
 import useUserStore from "@/store/userStore";
-import { FillHeartSVG, HeartSVG } from "@/svg/Play";
 import { DOMAIN } from "@/utils/constant";
-import { getRequest } from "@/utils/getRequest";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -15,7 +13,7 @@ const FollowButton = ({ userId, type }) => {
   const router = useRouter();
   const followings = useUserStore((state) => state.user.following);
   const toogleFollowings = useUserStore(
-    (state) => state.toogleFollowings
+    (state) => state.toogleFollowings,
   );
 
   const isFollow = followings?.some((item) => item === userId);
@@ -26,7 +24,7 @@ const FollowButton = ({ userId, type }) => {
       {},
       {
         headers: { Authorization: "Bearer " + TOKEN },
-      }
+      },
     );
     return response.data;
   };

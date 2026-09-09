@@ -4,7 +4,7 @@ import useLampStore from "@/store/store";
 import { useStore } from "@/store/useStore";
 import useUserStore from "@/store/userStore";
 import { DOMAIN } from "@/utils/constant";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useRef } from "react";
 

@@ -1,8 +1,9 @@
 "use client";
+import useColloctions from "@/hooks/Requests/useColloctions";
 import useUserStore from "@/store/userStore";
 import { PlusSVG } from "@/svg/Play";
 import { DOMAIN } from "@/utils/constant";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
@@ -123,17 +124,7 @@ const ArtistSection = ({ userId }) => {
   const track = useRef();
   const genre = useRef();
 
-  const { data } = useQuery({
-    queryKey: ["collections"],
-    queryFn: async () => {
-      const response = await axios.get(DOMAIN + "/collection", {
-        headers: {
-          Authorization: "Bearer " + TOKEN,
-        },
-      });
-      return response.data;
-    },
-  });
+  const { data } = useColloctions();
 
   const [progress, setProgress] = useState(0);
   const uploadTrack = async () => {

@@ -14,6 +14,7 @@ import useUserStore from "@/store/userStore";
 import { getRequest } from "@/utils/getRequest";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import useColloctions from "@/hooks/Requests/useArtistColloction";
 
 const CollectionItem = ({ image, title, onClick }) => {
   const unselectedStyle =
@@ -113,13 +114,7 @@ function RemoveFromCollectionButton({ id, collection }) {
     data: {
       collectioans: { me },
     },
-  } = useQuery({
-    queryKey: ["collections"],
-    queryFn: () =>
-      getRequest(DOMAIN + "/collection", {
-        Authorization: "Bearer " + TOKEN,
-      }),
-  });
+  } = useColloctions();
   const isYours = me.some((item) => item._id === collection);
   const RemoveFromCollection = async ({ playlist, track }) => {
     const response = await axios.delete(
@@ -134,7 +129,7 @@ function RemoveFromCollectionButton({ id, collection }) {
   };
 
   const { mutate } = useMutation({
-    mutationKey: ["remove fromcollection"],
+    mutationKey: ["remove from collection"],
     mutationFn: RemoveFromCollection,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["collections"] });

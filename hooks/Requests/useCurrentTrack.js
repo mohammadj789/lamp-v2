@@ -3,19 +3,15 @@ import useLampStore from "@/store/store";
 import { DOMAIN } from "@/utils/constant";
 import axios from "axios";
 import useUserStore from "@/store/userStore";
+import { api } from "@/utils/api";
 
 export const useCurrentTrack = () => {
-  const TOKEN = useUserStore((state) => state.token);
   const trackId = useLampStore((state) => state.track.id);
   return useQuery({
     queryKey: ["current-track", trackId],
 
     queryFn: async () => {
-      const { data } = await axios.get(`${DOMAIN}/track/${trackId}`, {
-        headers: {
-          Authorization: `Bearer ${TOKEN}`,
-        },
-      });
+      const { data } = await api.get(`/track/${trackId}`, {});
 
       return data.track;
     },

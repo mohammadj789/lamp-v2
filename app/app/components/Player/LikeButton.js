@@ -3,11 +3,7 @@ import { useFavorites } from "@/hooks/Requests/useFavorites";
 import useUserStore from "@/store/userStore";
 import { FillHeartSVG, HeartSVG } from "@/svg/Play";
 import { DOMAIN } from "@/utils/constant";
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { LoadingDots } from "../ui/LoadingDots";
 

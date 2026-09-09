@@ -1,10 +1,7 @@
 "use client";
+import useGetRecents from "@/hooks/Requests/usegetRecents";
 import useLampStore from "@/store/store";
-import useUserStore from "@/store/userStore";
 import { PauseSVG, PlaySVG } from "@/svg/Play";
-import { DOMAIN } from "@/utils/constant";
-import { getRequest } from "@/utils/getRequest";
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 export function TrackPlay({ item }) {
@@ -31,14 +28,7 @@ export function TrackPlay({ item }) {
 }
 
 const RecentlyPlayed = ({ taste }) => {
-  const TOKEN = useUserStore((state) => state.token);
-  const { data } = useQuery({
-    queryKey: [taste ? "taste" : "recently played"],
-    queryFn: () =>
-      getRequest(DOMAIN + (taste ? "/user/taste" : "/user/played"), {
-        Authorization: "Bearer " + TOKEN,
-      }),
-  });
+  const { data } = useGetRecents({ taste });
 
   const DataTracks = taste ? data?.suggestedTracks : data?.streams;
 
