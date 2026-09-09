@@ -13,14 +13,12 @@ export const useFollowUser = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const followHandller = async ({ id }) => {
-    const response = await api.post("/user/toggle-follow/" + id);
-    return response.data;
-  };
-
   return useMutation({
     mutationKey: ["follow user"],
-    mutationFn: followHandller,
+    mutationFn: async ({ id }) => {
+      const response = await api.post("/user/toggle-follow/" + id);
+      return response.data;
+    },
     onSuccess: (data, variables) => {
       router.refresh();
       toogleFollowings(variables.userId);
