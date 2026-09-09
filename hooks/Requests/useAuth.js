@@ -1,4 +1,6 @@
+import useUserStore from "@/store/userStore";
 import { api } from "@/utils/api";
+import { setLoginCookie } from "@/utils/loginCookie";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -13,7 +15,8 @@ export const useLogin = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      login(data.data.token, data.data.user);
+      setLoginCookie(data.data.token);
+      login(data.data.user);
       router.push("/app");
     },
   });
@@ -28,7 +31,8 @@ export const useRegister = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      login(data.data.token, data.data.user);
+      setLoginCookie(data.data.token);
+      login(data.data.user);
       router.push("/app");
     },
   });

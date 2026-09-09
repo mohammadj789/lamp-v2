@@ -1,5 +1,5 @@
 import { storage } from "@/utils/CookieStorage";
-import Cookies from "js-cookie";
+import { removeLoginCookie } from "@/utils/loginCookie";
 
 import { create } from "zustand";
 import {
@@ -8,7 +8,6 @@ import {
   createJSONStorage,
 } from "zustand/middleware";
 const init = {
-  token: null,
   isAuth: false,
   user: {
     username: null,
@@ -25,10 +24,8 @@ const init = {
 };
 const store = (set, get) => ({
   ...init,
-  login: (token, user) => {
-    Cookies.set("lamp_token", token);
+  login: (user) => {
     set({
-      token: token,
       isAuth: true,
       user: {
         id: user._id,
@@ -67,7 +64,10 @@ const store = (set, get) => ({
       },
     });
   },
-  logout: () => set({ ...init }),
+  logout: () => {
+    removeLoginCookie();
+    set({ ...init });
+  },
 });
 const useUserStore = create(
   devtools(

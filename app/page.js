@@ -1,14 +1,7 @@
-"use client";
-import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import { redirect } from "next/navigation";
 
 const Page = () => {
-  const router = useRouter();
-  useEffect(() => {
-    router.push("/app");
-  }, [router]);
-
-  return null;
+  redirect("/app");
 };
 
 export default Page;

@@ -37,10 +37,8 @@ const CollectionItem = ({ image, title, onClick }) => {
 };
 
 function AddToCollectionButton({ id }) {
-  const router = useRouter();
   const [modal, setModal] = useState(false);
-  const queryClient = useQueryClient();
-  const TOKEN = useUserStore((state) => state.token);
+
   const {
     data: {
       collectioans: { me },
@@ -84,9 +82,6 @@ function AddToCollectionButton({ id }) {
   );
 }
 function RemoveFromCollectionButton({ id, collection }) {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-  const TOKEN = useUserStore((state) => state.token);
   const {
     data: {
       collectioans: { me },
