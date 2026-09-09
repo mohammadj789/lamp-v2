@@ -11,11 +11,12 @@ import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import { DOMAIN } from "@/utils/constant";
 import { useCurrentTrack } from "@/hooks/Requests/useCurrentTrack";
+import { useSyncLyric } from "@/hooks/Requests/useSyncLyric";
 
 const SyncSection = ({ data }) => {
   const { back, replace } = useRouter();
   const [lyrics, setLyrics] = useState(data.lyric.lyric);
-
+  const { mutate, isPending } = useSyncLyric();
   const { data: detail } = useCurrentTrack();
   const lyric_id = detail.lyric;
 
@@ -34,36 +35,11 @@ const SyncSection = ({ data }) => {
       return data;
     });
   };
-  const TOKEN = useUserStore((state) => state.token);
+
   const timeStamps = useMemo(
     () => lyrics.map((item) => item.start),
     [lyrics],
   );
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["sync lyric"],
-    mutationFn: async () => {
-      const response = await axios.post(
-        DOMAIN + "/lyric/sync",
-        {
-          lyric: data.lyric._id,
-          timestamps: timeStamps,
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + TOKEN,
-          },
-        },
-      );
-      return response.data;
-    },
-    onSuccess: (data) => {
-      replace("/app");
-      enqueueSnackbar(data.message);
-    },
-    onError: (data) => {
-      enqueueSnackbar(data.response.data.errors.message);
-    },
-  });
 
   return (
     <div className="h-full sm:pb-16 w-full min-w-[41rem] sm:w-screen  sm:min-w-[20rem] pt-8 text-black text-lg overflow-auto  font-semibold">
@@ -93,7 +69,7 @@ const SyncSection = ({ data }) => {
             <button
               disabled={isPending}
               onClick={() => {
-                mutate();
+                mutate({ lyricId: data.lyric._id, timeStamps });
               }}
               className="bg-green-600 text-white px-4 py-1 rounded-lg mb-3"
             >

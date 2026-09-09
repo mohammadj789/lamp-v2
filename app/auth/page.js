@@ -1,39 +1,18 @@
 "use client";
-import useUserStore from "@/store/userStore";
-import { DOMAIN } from "@/utils/constant";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useLogin, useRegister } from "@/hooks/Requests/useAuth";
 import React, { useRef, useState } from "react";
 
-const LoginRequest = async (url, body) => {
-  const response = await axios.post(url, body);
-  return response.data;
-};
 function LoginForm({ setLogin }) {
-  const login = useUserStore((state) => state.login);
   const email = useRef();
   const password = useRef();
-  const router = useRouter();
-  const { mutate, isPending, error } = useMutation({
-    mutationKey: ["login"],
-    mutationFn: () =>
-      LoginRequest(DOMAIN + "/auth/login/", {
-        email: email.current.value,
-        password: password.current.value,
-      }),
-    onSuccess: (data) => {
-      login(data.data.token, data.data.user);
-      router.push("/app");
-    },
-  });
+  const { mutate, isPending, error } = useLogin();
 
   return (
     <form
       className="flex flex-col w-full"
       onSubmit={(e) => {
         e.preventDefault();
-        mutate();
+        mutate({ email, password });
       }}
     >
       <label className="text-slate-50 ml-1 text-xs font-semibold mb-1 ">
@@ -76,29 +55,20 @@ function RegisterForm({ setLogin }) {
   const username = useRef();
   const email = useRef();
   const password = useRef();
-  const router = useRouter();
-  const login = useUserStore((state) => state.login);
-  const { mutate, error, isPending } = useMutation({
-    mutationKey: ["signup"],
-    mutationFn: () =>
-      LoginRequest(DOMAIN + "/auth/signup/", {
-        name: name.current.value,
-        username: username.current.value,
-        email: email.current.value,
-        password: password.current.value,
-      }),
-    onSuccess: (data) => {
-      login(data.data.token, data.data.user);
-      router.push("/app");
-    },
-  });
+
+  const { mutate, error, isPending } = useRegister();
 
   return (
     <form
       className="flex flex-col w-full"
       onSubmit={(e) => {
         e.preventDefault();
-        mutate();
+        mutate({
+          name: name.current.value,
+          username: username.current.value,
+          email: email.current.value,
+          password: password.current.value,
+        });
       }}
     >
       <label className="text-slate-50 ml-1 text-xs font-semibold mb-1">

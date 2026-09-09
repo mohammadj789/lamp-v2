@@ -1,4 +1,5 @@
 "use client";
+import { usePlayCollection } from "@/hooks/Requests/usePlayCollection";
 import useLampStore from "@/store/store";
 
 import { PauseSVG, PlaySVG } from "@/svg/Play";
@@ -9,18 +10,12 @@ import React from "react";
 
 export function CollectionPlay({ id }) {
   const collection = useLampStore((state) => state.track.collection);
-  const setQ = useLampStore((state) => state.setQueue);
+
   const play = useLampStore((state) => state.play);
   const togglePlay = useLampStore((state) => state.togglePlay);
   const togglePause = useLampStore((state) => state.togglePause);
 
-  const { mutate } = useMutation({
-    mutationKey: ["collection_" + id],
-    mutationFn: () => getRequest(DOMAIN + "/collection/" + id),
-    onSuccess: ({ collection }) => {
-      setQ(collection.tracks, collection._id);
-    },
-  });
+  const { mutate } = usePlayCollection({ id });
   const clickHandler = (e) => {
     e.preventDefault();
     e.stopPropagation();

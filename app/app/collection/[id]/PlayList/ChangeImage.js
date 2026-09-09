@@ -7,48 +7,22 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
+import { useUpdateThumbnail } from "@/hooks/Requests/useUpdateThumbnail";
 
 const ChangeImage = ({ collection, ownerId, profile }) => {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-  const TOKEN = useUserStore((state) => state.token);
   const userId = useUserStore((state) => state.user.id);
-  const updateProfile = useUserStore((state) => state.updateProfile);
 
-  const ThumbnailCollection = async () => {
-    const file = imageRef.current.files[0];
-    const formData = new FormData();
-    if (file instanceof File) {
-      formData.append("image", file);
-    }
-
-    const response = await axios.patch(
-      profile
-        ? DOMAIN + "/user/profile/image"
-        : DOMAIN + "/collection/updateTumbnail/" + collection,
-      formData,
-      {
-        headers: {
-          Authorization: "Bearer " + TOKEN,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-    return response.data;
-  };
-
-  const { mutate } = useMutation({
-    mutationKey: ["update Thumbnail collection"],
-    mutationFn: ThumbnailCollection,
-    onSuccess: (data) => {
-      if (profile) updateProfile(data.profile);
-      else
-        queryClient.invalidateQueries({ queryKey: ["collections"] });
-
-      router.refresh();
-      setModal(false);
-    },
+  const { mutate } = useUpdateThumbnail({
+    onDone: () => setModal(false),
   });
+
+  const handleUpdateThumbnail = () => {
+    mutate({
+      file: imageRef.current.files[0],
+      profile,
+      collectionId: collection,
+    });
+  };
   const [modal, setModal] = useState(false);
   const imageRef = useRef();
 
@@ -67,7 +41,7 @@ const ChangeImage = ({ collection, ownerId, profile }) => {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                mutate();
+                handleUpdateThumbnail();
               }}
               className="flex flex-col w-full"
             >

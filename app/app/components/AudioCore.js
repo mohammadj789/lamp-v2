@@ -2,20 +2,14 @@
 import { useCurrentTrack } from "@/hooks/Requests/useCurrentTrack";
 import useLampStore from "@/store/store";
 import { useStore } from "@/store/useStore";
-import useUserStore from "@/store/userStore";
+import { api } from "@/utils/api";
 import { DOMAIN } from "@/utils/constant";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+
 import { useEffect, useRef } from "react";
 
 export const AudioCore = () => {
-  const TOKEN = useUserStore((state) => state.token);
-
   const track_id = useStore(useLampStore, (state) => state.track.id);
-  const track_collection = useStore(
-    useLampStore,
-    (state) => state.track.collection,
-  );
 
   const lastChange = useStore(
     useLampStore,
@@ -41,11 +35,8 @@ export const AudioCore = () => {
   const { mutate } = useMutation({
     mutationKey: ["update track status", track_id],
     mutationFn: async () =>
-      (
-        await axios.get(DOMAIN + "/track/update-stats/" + track_id, {
-          headers: { Authorization: "bearer " + TOKEN },
-        })
-      ).data,
+      (await api.get(DOMAIN + "/track/update-stats/" + track_id))
+        .data,
     onSuccess: (data, _vars, context) => {
       if (!audio.current) return;
 
@@ -74,7 +65,7 @@ export const AudioCore = () => {
   const prevTrackId = useRef(null);
 
   useEffect(() => {
-    if (!audio.current || !TOKEN || !track_id) return;
+    if (!audio.current || !track_id) return;
 
     // First time we see a real track_id => this is hydration from persisted
     // state, not a user action. Still fetch via the same query, just skip
@@ -110,7 +101,7 @@ export const AudioCore = () => {
       audio.current.ontimeupdate = null;
       audio.current.onloadedmetadata = null;
     };
-  }, [track_id, TOKEN, setCurTime, setDuration, QueueToNext, mutate]);
+  }, [track_id, setCurTime, setDuration, QueueToNext, mutate]);
 
   // Volume / mute
   useEffect(() => {

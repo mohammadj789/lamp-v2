@@ -11,37 +11,17 @@ import {
   useInventoryArtists,
   useInventoryCollections,
 } from "@/hooks/Requests/useInventory";
+import { useColloctionMutation } from "@/hooks/Requests/useColloctions";
 
 function NewCollectionButton({ hide }) {
   const user_role = useUserStore((state) => state.user.role);
   const [modal, setModal] = useState(false);
-  const queryClient = useQueryClient();
-  const TOKEN = useUserStore((state) => state.token);
 
-  const postCollection = async () => {
-    const response = await axios.post(
-      DOMAIN +
-        "/collection/create/" +
-        (selectRef?.current
-          ? selectRef.current.selectedOptions["0"].text.toLowerCase()
-          : "playlist"),
-      { title: nameRef.current.value },
-      { headers: { Authorization: "Bearer " + TOKEN } },
-    );
-    return response.data;
-  };
+  const [selectedType, setSelectedType] = useState("playlist");
+  const [title, setTitle] = useState("");
 
-  const { mutate } = useMutation({
-    mutationKey: ["new collection"],
-    mutationFn: postCollection,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["collections"] });
-      setModal(false);
-    },
-  });
-
-  const nameRef = useRef();
-  const selectRef = useRef();
+  const { mutate } = useColloctionMutation();
+  console.log(selectedType);
   return (
     <div className="flex items-center justify-between text-white m-4">
       <h2 className="lg:hidden">Your Library</h2>
@@ -66,21 +46,30 @@ function NewCollectionButton({ hide }) {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              mutate();
+              mutate(
+                { selectedType, title },
+                {
+                  onSuccess: () => {
+                    setModal(false);
+                  },
+                },
+              );
             }}
             className="flex flex-col w-full"
           >
             {user_role === "ARTIST" && (
               <select
-                ref={selectRef}
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
                 className="mb-2 text-slate-50 w-full border-[1px] text-xs border-neutral-700 rounded-sm outline-none px-3 py-2 bg-gray-900 focus:border-slate-50 hover:border-slate-50"
               >
-                <option>Album</option>
-                <option>Playlist</option>
+                <option value="album">Album</option>
+                <option value="playlist">Playlist</option>
               </select>
             )}
             <input
-              ref={nameRef}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               placeholder="Collection name"
               className="text-slate-50 w-full mb-2 border-[1px] text-xs border-neutral-700 rounded-sm outline-none px-3 py-2 bg-gray-900 focus:border-slate-50 hover:border-slate-50"
             />

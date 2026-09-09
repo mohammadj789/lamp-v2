@@ -1,42 +1,14 @@
 "use client";
-import useUserStore from "@/store/userStore";
-import { DOMAIN } from "@/utils/constant";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { enqueueSnackbar } from "notistack";
+import { usePostLyric } from "@/hooks/Requests/usePostLyric";
+
 import React, { useRef, useState } from "react";
 
 const NewSection = ({ data }) => {
   const [line, setLine] = useState([]);
   const lineRef = useRef();
-  const TOKEN = useUserStore((state) => state.token);
-  const router = useRouter();
-  const { mutate } = useMutation({
-    mutationKey: ["post lyric"],
-    mutationFn: async () => {
-      const response = await axios.post(
-        DOMAIN + "/lyric/new",
-        {
-          track: data.track._id,
-          lyric: line,
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + TOKEN,
-          },
-        },
-      );
-      return response.data;
-    },
-    onSuccess: (data) => {
-      router.replace("/app");
-      enqueueSnackbar(data.message);
-    },
-    onError: (data) => {
-      enqueueSnackbar(data.response.data.errors.message);
-    },
-  });
+
+  const { mutate } = usePostLyric();
+
   return (
     <div>
       <form
@@ -72,7 +44,7 @@ const NewSection = ({ data }) => {
           <button
             onClick={() => {
               if (line.length > 10) {
-                mutate();
+                mutate({ trackId: data.track._id, line });
               }
             }}
             className="bg-green-600 text-white px-4 py-1 rounded-lg mb-3"

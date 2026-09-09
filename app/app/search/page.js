@@ -8,20 +8,18 @@ import PlayListItem from "../collection/[id]/PlayList/PlayListItem";
 import useLampStore from "@/store/store";
 import { InventoryItem } from "../components/header/InventoryItem";
 import Card from "../user/[id]/profile/Card";
+import { useUserSearch } from "@/hooks/Requests/useSearch";
 
 const Page = () => {
   const search = useRef();
   const track_id = useLampStore((state) => state.track.id);
-  const { mutate, error, data, isPending } = useMutation({
-    mutationKey: ["search"],
-    mutationFn: () =>
-      getRequest(DOMAIN + "/user/search/" + search.current.value),
-    onSuccess: () => (search.current.value = ""),
-  });
+  const { mutate, error, data, isPending } = useUserSearch();
   const submitHandller = (e) => {
     e.preventDefault();
     if (search.current.value && search.current.value.length > 1) {
-      mutate();
+      mutate(search.current.value, {
+        onSuccess: () => (search.current.value = ""),
+      });
     }
   };
 

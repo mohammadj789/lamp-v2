@@ -1,20 +1,18 @@
 "use client";
-import { MenuSVG, OptionSVG } from "@/svg/Play";
+import { OptionSVG } from "@/svg/Play";
 import useLampStore from "@/store/store";
 import React, { useState } from "react";
 import ClickAwayListener from "react-click-away-listener";
 import Modal from "react-modal";
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
-import { DOMAIN } from "@/utils/constant";
+import { useQueryClient } from "@tanstack/react-query";
+
 import useUserStore from "@/store/userStore";
-import { getRequest } from "@/utils/getRequest";
-import axios from "axios";
+
 import { useRouter } from "next/navigation";
-import useColloctions from "@/hooks/Requests/useArtistColloction";
+import useColloctions, {
+  useAddToCollection,
+  useRemoveFromCollection,
+} from "@/hooks/Requests/useColloctions";
 
 const CollectionItem = ({ image, title, onClick }) => {
   const unselectedStyle =
@@ -47,30 +45,9 @@ function AddToCollectionButton({ id }) {
     data: {
       collectioans: { me },
     },
-  } = useQuery({
-    queryKey: ["collections"],
-    queryFn: () =>
-      getRequest(DOMAIN + "/collection", {
-        Authorization: "Bearer " + TOKEN,
-      }),
-  });
-  const AddToCollection = async ({ playlist, track }) => {
-    const response = await axios.post(
-      DOMAIN + "/collection/add/",
-      { trackID: track, playlistID: playlist },
-      { headers: { Authorization: "Bearer " + TOKEN } },
-    );
-    return response.data;
-  };
-
-  const { mutate } = useMutation({
-    mutationKey: ["add to collection"],
-    mutationFn: AddToCollection,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["collections"] });
-      setModal(false);
-      router.refresh();
-    },
+  } = useColloctions();
+  const { mutate } = useAddToCollection({
+    onDone: () => setModal(false),
   });
 
   return (
@@ -116,26 +93,8 @@ function RemoveFromCollectionButton({ id, collection }) {
     },
   } = useColloctions();
   const isYours = me.some((item) => item._id === collection);
-  const RemoveFromCollection = async ({ playlist, track }) => {
-    const response = await axios.delete(
-      DOMAIN + "/collection/remove-track",
+  const { mutate } = useRemoveFromCollection();
 
-      {
-        headers: { Authorization: "Bearer " + TOKEN },
-        data: { trackID: track, playlistID: playlist },
-      },
-    );
-    return response.data;
-  };
-
-  const { mutate } = useMutation({
-    mutationKey: ["remove from collection"],
-    mutationFn: RemoveFromCollection,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["collections"] });
-      router.refresh();
-    },
-  });
   if (isYours) {
     return (
       <li className="whitespace-nowrap hover:bg-neutral-700 rounded-lg px-3 py-2">
