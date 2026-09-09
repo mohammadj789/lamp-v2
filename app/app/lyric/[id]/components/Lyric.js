@@ -10,7 +10,8 @@ import { useCurrentTrack } from "@/hooks/Requests/useCurrentTrack";
 export function Lyric({ data }) {
   const { back } = useRouter();
   const { data: detail } = useCurrentTrack();
-  const lyric_id = detail.lyric;
+
+  const lyric_id = detail?.lyric;
 
   useEffect(() => {
     if (lyric_id !== data.lyric._id) back();
