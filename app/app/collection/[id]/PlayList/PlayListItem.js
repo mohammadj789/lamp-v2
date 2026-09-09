@@ -1,5 +1,5 @@
 "use client";
-import { HeartSVG, PauseSVG, PlaySVG } from "@/svg/Play";
+import { PauseSVG, PlaySVG } from "@/svg/Play";
 import useLampStore from "@/store/store";
 import React from "react";
 import { convertSecondsToMMSS } from "@/utils/secondsToMuinets";
