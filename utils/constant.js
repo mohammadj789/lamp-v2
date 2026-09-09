@@ -1,5 +1,5 @@
 export const DOMAIN =
-  process.env.NODE_ENV === "development"
+  process.env.NODE_ENV !== "development"
     ? "http://localhost:4000"
     : "https://lamp-server.onrender.com";
 export const TOKEN =

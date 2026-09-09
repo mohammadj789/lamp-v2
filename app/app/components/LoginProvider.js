@@ -4,10 +4,13 @@ import Loading from "@/app/loading";
 import useUserStore from "@/store/userStore";
 import { getLoginCookie } from "@/utils/loginCookie";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api } from "@/utils/api";
 
 const LoginProvider = ({ children }) => {
+  const router = useRouter();
+
   const [mounted, setMounted] = useState(false);
   const [token, setToken] = useState(null);
 
@@ -53,6 +56,20 @@ const LoginProvider = ({ children }) => {
     }
   }, [mounted, token, isAuth, mutate, logout]);
 
+  // Redirect once we're SURE the user isn't authenticated
+  // (mounted, no pending check, no in-flight error state to still resolve).
+  useEffect(() => {
+    if (!mounted) return;
+    if (isPending) return;
+
+    const stillChecking = token && !isAuth && !isError;
+    if (stillChecking) return;
+
+    if (!isAuth) {
+      router.replace("/auth");
+    }
+  }, [mounted, isPending, token, isAuth, isError, router]);
+
   /*
    * Before mount, and while checking the token / user session,
    * don't render the protected application.
@@ -67,7 +84,8 @@ const LoginProvider = ({ children }) => {
 
   /*
    * If the user isn't authenticated,
-   * don't render protected content.
+   * don't render protected content
+   * (redirect is already in flight from the effect above).
    */
   if (!isAuth) {
     return null;
