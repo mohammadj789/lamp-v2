@@ -16,7 +16,7 @@ const FollowButton = ({ userId, type }) => {
     return (
       <button
         className="bg-neutral-800 rounded-lg text-xs text-white px-2 py-1"
-        onClick={() => mutate({ id: user_id, userId, type })}
+        onClick={() => mutate({ id: userId, type })}
       >
         {isFollow ? "unfollow" : "follow"}
       </button>

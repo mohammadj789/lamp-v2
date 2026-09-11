@@ -21,7 +21,7 @@ export const useFollowUser = () => {
     },
     onSuccess: (data, variables) => {
       router.refresh();
-      toogleFollowings(variables.userId);
+      toogleFollowings(variables.id);
       variables.type === "artist" &&
         queryClient.invalidateQueries({
           queryKey: ["Followed Artist"],
