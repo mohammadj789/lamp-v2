@@ -70,7 +70,7 @@ const Page = () => {
         </div>
       )}
       {data?.users && (
-        <div className="grid grid-cols-6 sm:grid-cols-2">
+        <div className="grid grid-cols-6  sm:grid-cols-2">
           {data?.users.map((item) => (
             <Card
               type={item.role.toLowerCase()}
