@@ -5,8 +5,7 @@ import React, { useRef, useState } from "react";
 
 const NewSection = ({ data }) => {
   const [line, setLine] = useState([]);
-  const lineRef = useRef();
-
+  const [LineInput, setLineinput] = useState("");
   const { mutate } = usePostLyric();
 
   return (
@@ -14,16 +13,17 @@ const NewSection = ({ data }) => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          lineRef.current.value.trim().length > 1 &&
+          LineInput.length > 1 &&
             setLine((prv) => {
-              return [...prv, lineRef.current.value.trim()];
+              return [...prv, LineInput];
             });
+          setLineinput("");
         }}
         className="flex justify-between gap-10 mb-3"
       >
-        {" "}
         <input
-          ref={lineRef}
+          value={LineInput}
+          onChange={(e) => setLineinput(e.target.value)}
           autoFocus
           placeholder="write a line"
           className="text-green-950  w-full  border-2 text-xs border-green-600 rounded-lg outline-none px-3 py-2 bg-white focus:border-gray-900 hover:border-gray-900"
@@ -34,9 +34,17 @@ const NewSection = ({ data }) => {
       </form>
       <div className="flex flex-col ">
         {line.map((item, i) => (
-          <p key={i} className="text-3xl text-white">
-            {item}
-          </p>
+          <div key={i} className="flex justify-between items-center">
+            <p className="text-3xl text-white">{item}</p>
+            <button
+              onClick={() => {
+                setLine((prv) => prv.filter((_, idx) => idx !== i));
+              }}
+              className="bg-red-500 text-white px-4 py-1 rounded-lg"
+            >
+              Remove
+            </button>
+          </div>
         ))}
       </div>
       <div className="flex justify-center w-full">
