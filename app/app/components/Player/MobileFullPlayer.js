@@ -6,7 +6,7 @@ import { Transition } from "react-transition-group";
 import useUiStore from "@/store/uiStore";
 import useLampStore from "@/store/store";
 import { useStore } from "@/store/useStore";
-import { DownSVG, HeartSVG, MenuSVG, OptionSVG } from "@/svg/Play";
+import { DownSVG, MenuSVG, MicSVG } from "@/svg/Play";
 import { LikeButton } from "./LikeButton";
 import Link from "next/link";
 import { MenueButton } from "../../collection/[id]/PlayList/MenueButton";
@@ -85,6 +85,23 @@ function MobileFullPlayer(props) {
                 </p>
               </div>
               <div className="flex items-center">
+                {detail?.lyric ? (
+                  <Link
+                    onClick={toggleFullPlayer}
+                    href={"/app/lyric/" + detail.lyric}
+                    className={`text-gray-400 rounded-full flex items-center h-8 w-8 p-1 hover:text-white`}
+                  >
+                    <MicSVG />
+                  </Link>
+                ) : (
+                  <Link
+                    onClick={toggleFullPlayer}
+                    href={"/app/lyric/new/" + detail?._id}
+                    className={`text-gray-400 rounded-full flex items-center h-8 w-8 p-1 hover:text-white`}
+                  >
+                    <MicSVG />
+                  </Link>
+                )}
                 <LikeButton id={detail?._id} />
                 <Link
                   onClick={toggleFullPlayer}
