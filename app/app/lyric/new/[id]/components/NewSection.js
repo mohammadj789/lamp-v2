@@ -25,6 +25,7 @@ const NewSection = ({ data }) => {
           onPaste={(e) => {
             e.preventDefault();
             const data = e.clipboardData.getData("text");
+            if (!data) return;
             const lines = data.includes("\n")
               ? data.split("\n").filter((v) => v.trim())
               : [data];
