@@ -3,7 +3,7 @@ export const getLoginCookie = () => {
   return Cookies.get("lamp_token");
 };
 export const setLoginCookie = (token) => {
-  return Cookies.set("lamp_token", token);
+  return Cookies.set("lamp_token", token, { expires: 15 });
 };
 export const removeLoginCookie = () => {
   return Cookies.remove("lamp_token");
