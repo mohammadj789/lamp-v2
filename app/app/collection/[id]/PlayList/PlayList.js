@@ -10,7 +10,7 @@ export default function PlayList(props) {
     ? {
         tracks: props.data.favorits,
         title: "Favorites",
-        owner: { owner_id: { name: "me" } },
+        owner: { name: "me" },
         type: "favorite",
         _id: "favorite",
       }
@@ -31,9 +31,9 @@ export default function PlayList(props) {
         title={data?.title}
         credit={{
           img: "/girl.jpg",
-          name: data?.owner?.owner_id.name,
+          name: data?.owner?.name,
           link: "/app",
-          owner_Id: data?.owner.owner_id,
+          owner_Id: data?.owner._id,
         }}
         time={{
           hour: Math.floor(time / 3600),

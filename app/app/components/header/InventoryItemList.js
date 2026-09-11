@@ -119,7 +119,7 @@ const InventoryItemList = ({ hide }) => {
           title={item.title}
           type={item.type}
           id={item._id}
-          credit={item.owner.owner_id.name}
+          credit={item.owner.name}
         />
       ))}
       {CollectionData?.collectioans.me

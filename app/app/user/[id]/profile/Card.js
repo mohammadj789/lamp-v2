@@ -21,7 +21,7 @@ const Card = async ({ item, withoutBtn, type }) => {
       </p>
       {item?.owner && (
         <p className="line-clamp-2 text-gray-400 text-sm sm:text-xs flex-shrink-0 sm:line-clamp-1 ">
-          {item.owner.owner_id.name}
+          {item.owner.name}
         </p>
       )}
     </Link>

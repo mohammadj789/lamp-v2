@@ -80,7 +80,7 @@ const Page = () => {
                 _id: item._id,
                 image: item.image,
                 title: item.role.toLowerCase(),
-                owner: { owner_id: { name: item.name } },
+                owner: { name: item.name },
               }}
             />
           ))}
