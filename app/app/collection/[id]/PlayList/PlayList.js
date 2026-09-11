@@ -10,7 +10,7 @@ export default function PlayList(props) {
     ? {
         tracks: props.data.favorits,
         title: "Favorites",
-        owner: { owner_name: "me" },
+        owner: { owner_id: { name: "me" } },
         type: "favorite",
         _id: "favorite",
       }
@@ -20,19 +20,18 @@ export default function PlayList(props) {
   const time = data.tracks.reduce((prev, cur, i) => {
     return prev + cur.duration;
   }, 0);
-
   return (
     <div className="overflow-auto h-full sm:pb-16">
       <InfoHeader
         id={data?._id}
         type={data?.type}
         status={"public"}
-        image={props.favorite ? "/girl.jpg" : data.image}
+        image={props.favorite ? "/liked-songs.png" : data.image}
         likes={data.likes}
         title={data?.title}
         credit={{
           img: "/girl.jpg",
-          name: data?.owner?.owner_name,
+          name: data?.owner?.owner_id.name,
           link: "/app",
           owner_Id: data?.owner.owner_id,
         }}

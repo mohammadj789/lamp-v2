@@ -104,7 +104,7 @@ const InventoryItemList = ({ hide }) => {
     <div className="h-2/3 pt-3 overflow-y-scroll overflow-x-hidden">
       {<NewCollectionButton hide={hide} />}
       <InventoryItem
-        image={"/hill.jpg"}
+        image={"/liked-songs.png"}
         title="Likes"
         id={"favorites"}
         type={"favorite"}
@@ -119,7 +119,7 @@ const InventoryItemList = ({ hide }) => {
           title={item.title}
           type={item.type}
           id={item._id}
-          credit={item.owner.owner_name}
+          credit={item.owner.owner_id.name}
         />
       ))}
       {CollectionData?.collectioans.me
