@@ -22,6 +22,16 @@ const NewSection = ({ data }) => {
         className="flex justify-between gap-10 mb-3"
       >
         <input
+          onPaste={(e) => {
+            e.preventDefault();
+            const data = e.clipboardData.getData("text");
+            const lines = data.includes("\n")
+              ? data.split("\n").filter((v) => v.trim())
+              : [data];
+            setLine((prv) => {
+              return [...prv, ...lines];
+            });
+          }}
           value={LineInput}
           onChange={(e) => setLineinput(e.target.value)}
           autoFocus
@@ -32,7 +42,7 @@ const NewSection = ({ data }) => {
           Add
         </button>
       </form>
-      <div className="flex flex-col ">
+      <div className="flex flex-col gap-3 ">
         {line.map((item, i) => (
           <div key={i} className="flex justify-between items-center">
             <p className="text-3xl text-white">{item}</p>
