@@ -34,24 +34,25 @@ export const AudioCore = () => {
 
   const { mutate } = useMutation({
     mutationKey: ["update track status", track_id],
-    mutationFn: async () =>
-      (await api.get(DOMAIN + "/track/update-stats/" + track_id))
-        .data,
-    onSuccess: (data, _vars, context) => {
+    mutationFn: async () => {
+      if (audio.current) {
+        audio.current.pause();
+        audio.current.removeAttribute("src");
+        audio.current.load();
+      }
+      return (
+        await api.get(DOMAIN + "/track/update-stats/" + track_id)
+      ).data;
+    },
+    onSuccess: (data, _vars) => {
       if (!audio.current) return;
-
-      // data.song.address is the ready-to-play URL -- no stream endpoint
-      // or manual URL building needed anymore
       audio.current.src = data.song.address;
-      audio.current.load();
       audio.current.currentTime = 0;
+      audio.current.load();
 
-      // Don't autoplay on hydration -- only when the user actually
-      // triggered a real track change
-      if (!context?.isHydration) {
+      if (play) {
         audio.current
           .play()
-          .then(() => togglePlay())
           .catch((e) => console.error("play() failed:", e));
       }
     },
@@ -60,37 +61,15 @@ export const AudioCore = () => {
     },
   });
 
-  // Fetch stats + load/play new track whenever track_id changes
-  const hasHydratedTrack = useRef(false);
-  const prevTrackId = useRef(null);
-
   useEffect(() => {
     if (!audio.current || !track_id) return;
-
-    // First time we see a real track_id => this is hydration from persisted
-    // state, not a user action. Still fetch via the same query, just skip
-    // autoplay.
-    const isHydration = !hasHydratedTrack.current;
-    if (isHydration) {
-      hasHydratedTrack.current = true;
-      prevTrackId.current = track_id;
-      mutate(undefined, { context: { isHydration: true } });
-    } else {
-      // Ignore no-op re-renders where track_id didn't actually change
-      if (prevTrackId.current === track_id) return;
-      prevTrackId.current = track_id;
-
-      mutate(undefined, { context: { isHydration: false } });
-    }
-
+    mutate();
     audio.current.ontimeupdate = () =>
       setCurTime(audio.current.currentTime);
     audio.current.onended = () => {
-      if (QueueToNext()) {
+      if (QueueToNext())
         audio.current.play().catch((e) => console.error(e));
-      } else {
-        audio.current.pause();
-      }
+      else audio.current.pause();
     };
     audio.current.onloadedmetadata = () =>
       setDuration(audio.current.duration);
@@ -124,13 +103,11 @@ export const AudioCore = () => {
   // Play / pause toggle
   useEffect(() => {
     if (!audio.current) return;
-    if (!play) {
-      audio.current.pause();
-    } else {
+    if (!play) audio.current.pause();
+    else
       audio.current
         .play()
         .catch((e) => console.error("play() failed:", e));
-    }
   }, [play]);
 
   // Cleanup on unmount

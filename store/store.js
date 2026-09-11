@@ -26,6 +26,8 @@ const store = (set, get) => ({
     const last = queue?.[0];
 
     set({
+      currentTime: 0,
+      play: true,
       queue: [...queue.slice(1)],
       track: {
         id: last._id,
@@ -45,6 +47,7 @@ const store = (set, get) => ({
       set({
         queue: [...queue.slice(1)],
         currentTime: 0,
+        play: true,
         track: {
           id: track._id || track.id,
           collection: null,
@@ -67,6 +70,7 @@ const store = (set, get) => ({
 
     set({
       currentTime: 0,
+      play: true,
       queue: queue,
       track: {
         id: track._id || track.id,
