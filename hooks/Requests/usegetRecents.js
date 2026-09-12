@@ -1,3 +1,4 @@
+import { api } from "@/utils/api";
 import { useQuery } from "@tanstack/react-query";
 
 const useGetRecents = ({ taste }) => {

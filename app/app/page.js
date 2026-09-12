@@ -26,7 +26,7 @@ export default async function Home() {
       <h1 className="text-xl font-bold mb-2">Wellcome</h1>
       <RecentlyPlayed />
       <RecentlyPlayed taste />
-      {!!TopSongData.length && <TopSongs data={TopSongData} />}
+      {!!TopSongData.tracks.length && <TopSongs data={TopSongData} />}
       {!!CollectionData.collections.length && (
         <CardRow
           type={"collection"}
