@@ -30,9 +30,9 @@ export default function PlayList(props) {
         likes={data.likes}
         title={data?.title}
         credit={{
-          img: "/girl.jpg",
+          img: data?.owner?.image,
           name: data?.owner?.name,
-          link: "/app",
+          role: data?.owner.role,
           owner_Id: data?.owner._id,
         }}
         time={{

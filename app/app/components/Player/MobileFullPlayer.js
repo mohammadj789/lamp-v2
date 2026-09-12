@@ -69,7 +69,7 @@ function MobileFullPlayer(props) {
           </div>
           <div className="h-full w-full flex items-center justify-center">
             <img
-              src={detail.image ?? "/hill.jpg"}
+              src={detail.image}
               className="h-auto w-full aspect-square rounded max-w-xs max-h-80 object-cover "
               alt=" cover"
             />

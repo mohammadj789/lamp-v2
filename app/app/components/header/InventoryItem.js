@@ -6,7 +6,7 @@ import React from "react";
 
 export const InventoryItem = (props) => {
   const track_collection = useLampStore(
-    (state) => state.track.collection
+    (state) => state.track.collection,
   );
 
   const isPlaying = track_collection === props.id;
@@ -25,8 +25,8 @@ export const InventoryItem = (props) => {
         props?.type?.toLowerCase() === "favorite"
           ? "/app/favorites"
           : props?.type?.toLowerCase() === "artist"
-          ? `/app/artist/${props.id}`
-          : `/app/collection/${props.id}`
+            ? `/app/artist/${props.id}`
+            : `/app/collection/${props.id}`
       }
     >
       <img
@@ -35,7 +35,7 @@ export const InventoryItem = (props) => {
             ? "rounded-full"
             : "rounded-md"
         }`}
-        src={props.image ?? "/montain.jpg"}
+        src={props.image}
         alt="inventory item"
       />
       <div

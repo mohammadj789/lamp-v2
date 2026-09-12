@@ -115,7 +115,7 @@ const InventoryItemList = ({ hide }) => {
           hide={hide}
           key={item._id}
           // isPlaying
-          image={item.image ? item.image : "/hill.jpg"}
+          image={item.image}
           title={item.title}
           type={item.type}
           id={item._id}
@@ -129,7 +129,7 @@ const InventoryItemList = ({ hide }) => {
             hide={hide}
             key={item._id}
             // isPlaying
-            image={item.image ? item.image : "/hill.jpg"}
+            image={item.image}
             title={item.title}
             type={item.type}
             id={item._id}
@@ -140,7 +140,7 @@ const InventoryItemList = ({ hide }) => {
         <InventoryItem
           hide
           key={item._id}
-          image={item.image ? item.image : "/hill.jpg"}
+          image={item.image}
           title={item.name}
           type={"artist"}
           id={item._id}

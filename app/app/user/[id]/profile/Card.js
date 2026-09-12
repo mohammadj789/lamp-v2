@@ -12,7 +12,7 @@ const Card = async ({ item, withoutBtn, type }) => {
         <img
           alt="card thumbnail"
           className="object-cover rounded-md w-full h-full"
-          src={item.image ? item.image : "/girl.jpg"}
+          src={item.image}
         />
         {!withoutBtn && <CollectionPlay id={item._id} />}
       </div>

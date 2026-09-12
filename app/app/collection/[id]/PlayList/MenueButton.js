@@ -24,7 +24,7 @@ const CollectionItem = ({ image, title, onClick }) => {
     >
       <img
         className={`sm:w-14 sm:h-14 w-28 h-28 object-cover flex-shrink-0 rounded-md`}
-        src={image ?? "/montain.jpg"}
+        src={image}
         alt="inventory item"
       />
       <div className={`mx-4 flex flex-col `}>
@@ -69,7 +69,7 @@ function AddToCollectionButton({ id }) {
             ?.map((item) => (
               <CollectionItem
                 key={item._id}
-                image={item.image ? item.image : "/girl.jpg"}
+                image={item.image}
                 title={item.title}
                 onClick={() =>
                   mutate({ playlist: item._id, track: id })

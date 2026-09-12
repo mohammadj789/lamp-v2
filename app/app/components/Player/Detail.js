@@ -1,8 +1,4 @@
 "use client";
-
-import useLampStore from "@/store/store";
-import { useStore } from "@/store/useStore";
-import { revalidateTag } from "next/cache";
 import { LikeButton } from "./LikeButton";
 import { useCurrentTrack } from "@/hooks/Requests/useCurrentTrack";
 
@@ -12,7 +8,7 @@ export function Detail(props) {
     <div className="max-w-sm w-1/4 overflow-hidden flex-shrink-0 text-gray-100 flex relative items-center py-2 gap-4">
       <img
         className={`w-12 h-12 object-cover flex-shrink-0 rounded-md`}
-        src={detail?.image ?? "/montain.jpg"}
+        src={detail?.image}
         alt="inventory item"
       />
       <div className="font-medium flex w-auto flex-col">

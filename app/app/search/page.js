@@ -61,7 +61,7 @@ const Page = () => {
               hide
               selected
               key={item.key}
-              image={item.image ? item.image : "/hill.jpg"}
+              image={item.image}
               title={item.title}
               id={item._id}
               type={item.type}

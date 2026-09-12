@@ -26,7 +26,7 @@ function MobilePlayer(props) {
         <img
           onClick={toggleFullPlayer}
           className={`w-10 h-10 object-cover flex-shrink-0 rounded-sm`}
-          src={"/girl.jpg" ?? "/montain.jpg"}
+          src={detail?.image}
           alt="inventory item"
         />
         <div
